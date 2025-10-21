@@ -18,13 +18,15 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text('SEM')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //Image(image: images.AssetImage('assets/logo.png')),
-            Fondo(),
+            Image(image: images.AssetImage('assets/images/logo.png')),
+
+            //generame una imagen aleatoria de logo de la red
+
+            // Fondo(),
             Contenido(
               emailcontroller: _emailcontroller,
               passwordcontroller: _passwordcontroller,

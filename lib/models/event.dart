@@ -42,7 +42,7 @@ class Event {
     return Event(
       cod: json['cod'],
       fechaIni: DateTime.parse(json['fechaIni']),
-      fechaFin: DateTime.parse(json['fechaFin']),
+      fechaFin: DateTime.parse(json['fechafin']),
       horaPrevistaIni: TimeOfDay(
         hour: int.parse(timeParts[0]),
         minute: int.parse(timeParts[1]),

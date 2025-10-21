@@ -101,4 +101,6 @@ class EventService {
       throw Exception('Error de conexión: $e');
     }
   }
+
+
 }

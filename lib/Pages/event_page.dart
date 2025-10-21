@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/Pages/event_detail_page.dart';
 import 'package:flutter_application_2/models/request_event.dart';
@@ -64,75 +63,83 @@ class _EventsPageState extends State<EventsPage> {
                       ),
                     ),
                     Expanded(
-                      child: Table(
-                        border: TableBorder.all(),
-                        children: [
-                          TableRow(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Evento',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Descripción Material',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Descripción Personal',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          // Aquí deberías agregar los eventos obtenidos de la API
-                          // Por ejemplo, si tienes una lista de eventos llamada `events`:
-                          ...eventRequest.map((event) {
-                            return TableRow(
+                      child: SingleChildScrollView(
+                        child: Table(
+                          border: TableBorder.all(),
+                          children: [
+                            TableRow(
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                              (context) => EventDetailPage(
-                                                requestEvent: event,
-                                              ),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(event.cod ?? 'Sin código'),
+                                  child: Text(
+                                    'Evento',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    event.descripcionMaterial ??
-                                        'Sin descripción',
+                                    'Descripción Material',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    event.descripcionPersonal ??
-                                        'Sin descripción',
+                                    'Descripción Personal',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ],
-                            );
-                          }).toList(),
-                        ],
+                            ),
+
+                            // Aquí deberías agregar los eventos obtenidos de la API
+                            // Por ejemplo, si tienes una lista de eventos llamada `events`:
+                            ...eventRequest.map((event) {
+                              return TableRow(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => EventDetailPage(
+                                                  requestEvent: event,
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      child: Text(event.cod ?? 'Sin código'),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      event.descripcionMaterial ??
+                                          'Sin descripción',
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      event.descripcionPersonal ??
+                                          'Sin descripción',
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          ],
+                        ),
                       ),
                     ),
                   ],

@@ -7,13 +7,17 @@ class Employee {
   String? numSS;
   String? categoria; // 'gerente', 'organizacion', 'mozo', 'tecnico', 'almacen'
   String? email;
+  String? estado;
+
+  // Constructor para otros empleados
+  Employee.newInstance();
 
   factory Employee() {
     return _instance;
   }
 
   bool get esGerente => categoria == 'gerente';
-  bool get esOrganizacion => categoria == 'organizacion';
+  bool get esOrganizacion => categoria == 'organización';
   bool get esRolLimitado => !esGerente && !esOrganizacion;
 
   void fromJson(Map<String, dynamic> json) {
@@ -23,6 +27,15 @@ class Employee {
     numSS = json['numSS'];
     categoria = json['categoria'];
     email = json['email'];
+    estado =
+        json['estado'] ??
+        'disponible'; // Default to 'disponible' if not provided
+  }
+
+  factory Employee.fromJson(Map<String, dynamic> json) {
+    final emp = Employee.newInstance();
+    emp.fromJson(json);
+    return emp;
   }
 
   Map<String, dynamic> toJson() {
@@ -33,6 +46,8 @@ class Employee {
       'numSS': this.numSS,
       'categoria': this.categoria,
       'email': this.email,
+      'estado':
+          this.estado ?? 'disponible', // Default to 'disponible' if not set
     };
   }
 

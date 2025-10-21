@@ -31,4 +31,36 @@ class EmployeeService {
       return;
     }
   }
+
+  Future<List<Employee>> getAllEmployees() async {
+    String url = "$_baseUrl/employee/list";
+    print('Solicitando empleados a: $url');
+    final response = await http
+        .get(Uri.parse(url), headers: {'Content-Type': 'application/json'})
+        .timeout(const Duration(seconds: 10));
+
+    print('Respuesta recibida. Código: ${response.statusCode}');
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print('Empleados recibidos: ${data['data'].length}');
+      print('Datos de los empleados: $data');
+
+      final employeesData = data['data'] as List;
+
+      final employeeJson =
+          employeesData
+              .map((employeeJson) => Employee.fromJson(employeeJson))
+              .toList();
+
+      for (var employee = 0; employee < employeeJson.length; employee++) {
+        print('Empleado $employee: ${employeeJson[employee].toJson()}');
+      }
+
+      return employeeJson;
+    } else {
+      print('Error al obtener los empleados: ${response.statusCode}');
+      throw Exception('Error al cargar empleados: ${response.statusCode}');
+    }
+  }
 }

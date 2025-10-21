@@ -3,8 +3,8 @@ class RequestEvent {
   final String nombre;
   final String descripcionMaterial;
   final String descripcionPersonal;
-  final DateTime fechaIni;
-  final DateTime fechaFin;
+  final DateTime? fechaIni;
+  final DateTime? fechaFin;
   final double duracion;
   final String direccion;
   final int aforo;
@@ -35,8 +35,8 @@ class RequestEvent {
       'nombre': nombre,
       'descripcionMaterial': descripcionMaterial,
       'descrpcionPersonal': descripcionPersonal,
-      'fechaIni': fechaIni.toIso8601String(),
-      'fechaFin': fechaFin.toIso8601String(),
+      'fechaIni': fechaIni?.toIso8601String(),
+      'fechaFin': fechaFin?.toIso8601String(),
       'duracion': duracion,
       'direccion': direccion,
       'aforo': aforo,
@@ -52,8 +52,8 @@ class RequestEvent {
       nombre: json['nombre'],
       descripcionMaterial: json['descripcionMaterial'],
       descripcionPersonal: json['descripcionPersonal'],
-      fechaIni: DateTime.parse(json['fechaIni']),
-      fechaFin: DateTime.parse(json['fechaFin']),
+      fechaIni: DateTime.tryParse(json['fechaIni']),
+      fechaFin: DateTime.tryParse(json['fechaFin']),
       duracion: json['duracion'].toDouble(),
       direccion: json['direccion'],
       aforo: json['aforo'],

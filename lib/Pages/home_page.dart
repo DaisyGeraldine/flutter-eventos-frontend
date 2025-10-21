@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as images;
 import 'package:flutter_application_2/Pages/calendar_page.dart';
 import 'package:flutter_application_2/Pages/check_hours.dart';
 import 'package:flutter_application_2/models/employee.dart';
@@ -18,16 +19,7 @@ class _HomePageState extends State<HomePage> {
   bool isLoading = false;
 
   final List<DrawerItem> _todasOpciones = [
-    DrawerItem(Icons.menu, 'Menú', '/menu', todos: true),
     DrawerItem(Icons.calendar_today, 'Calendario', '/calendario', todos: true),
-
-    DrawerItem(
-      Icons.access_time,
-      'Horas trabajadas',
-      '/horas',
-      gerente: true,
-      todos: true,
-    ),
     DrawerItem(
       Icons.inventory,
       'Almacén',
@@ -49,6 +41,13 @@ class _HomePageState extends State<HomePage> {
       '/tareas',
       gerente: true,
       limitados: true,
+    ),
+    DrawerItem(
+      Icons.access_time,
+      'Horas trabajadas',
+      '/horas',
+      gerente: true,
+      todos: true,
     ),
     DrawerItem(Icons.event, 'Gestión Eventos', '/eventos', gerente: true),
     DrawerItem(Icons.message, 'Mensajes', '/mensajes', gerente: true),
@@ -80,18 +79,8 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Home Page'),
         actions: [
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {
-              // Acción al presionar el botón de notificaciones
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              // Acción al presionar el botón de configuración
-            },
-          ),
+          IconButton(icon: Icon(Icons.notifications), onPressed: () {}),
+          IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
         ],
       ),
       drawer: Drawer(
@@ -107,20 +96,159 @@ class _HomePageState extends State<HomePage> {
       body:
           isLoading
               ? Center(child: CircularProgressIndicator())
-              : Center(
+              : Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Text('Bienvenido a la página de inicio'),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Checkhours()),
-                        );
-                      },
-                      child: Text('Ver horas trabajadas'),
+                    Card(
+                      elevation: 4,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.person,
+                                  color: Colors.green,
+                                  size: 32,
+                                ),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    '¡Bienvenido, ${employee.nombre}!',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Resumen de tu actividad',
+                              style: TextStyle(color: Colors.grey[700]),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 24),
+                    // Resumen visual (puedes personalizar los valores)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: Card(
+                            color: Colors.blue[50],
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.access_time,
+                                    color: Colors.blue,
+                                    size: 32,
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text(
+                                    'Horas trabajadas',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  // TODO: Reemplaza este valor por el total real de horas trabajadas
+                                  Text(
+                                    "50", //horasTrabajadasTotal.toString(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  // Ejemplo: int horasTrabajadasTotal = 120;
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Card(
+                            color: Colors.orange[50],
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.event,
+                                    color: Colors.orange,
+                                    size: 32,
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text(
+                                    'Próximos eventos',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  // TODO: Reemplaza este valor por el total real de eventos próximos
+                                  Text(
+                                    "3", //proximosEventosTotal.toString(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.orange,
+                                    ),
+                                  ),
+                                  // Ejemplo: int proximosEventosTotal = 3;
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Card(
+                            color: Colors.green[50],
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.message,
+                                    color: Colors.green,
+                                    size: 32,
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text(
+                                    'Mensajes',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  // TODO: Reemplaza este valor por el total real de mensajes
+                                  Text(
+                                    "5", //mensajesTotal.toString(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                  // Ejemplo: int mensajesTotal = 5;
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -145,6 +273,10 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildHeader(Employee employee) {
     return UserAccountsDrawerHeader(
+      decoration: BoxDecoration(color: Color(0xff142047)),
+      currentAccountPicture: CircleAvatar(
+        child: Image(image: images.AssetImage('assets/images/logo.png')),
+      ),
       accountName: Text('${employee.nombre} ${employee.apellidos}'),
       accountEmail: Text(employee.categoria?.toUpperCase() ?? ''),
     );
