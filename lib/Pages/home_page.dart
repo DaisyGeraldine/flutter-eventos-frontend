@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as images;
-import 'package:flutter_application_2/Pages/calendar_page.dart';
-import 'package:flutter_application_2/Pages/check_hours.dart';
 import 'package:flutter_application_2/models/employee.dart';
 import 'package:flutter_application_2/service/employee_service.dart';
 
@@ -62,8 +60,8 @@ class _HomePageState extends State<HomePage> {
   void loadEmployeeData() async {
     isLoading = true;
     try {
-      await _employeeService.getEmployeeById(widget.dni);
-      print('Empleado - HomePage: ${employee?.toJson()}');
+      //await _employeeService.getEmployeeById(widget.dni);
+      print('Empleado - HomePage: ${employee.toJson()}');
     } catch (e) {
       print('Error al cargar los datos del empleado: $e');
     }
@@ -73,7 +71,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print('Empleado: ${employee?.toJson()}');
+    // print('Empleado: ${employee?.toJson()}');
 
     return Scaffold(
       appBar: AppBar(
@@ -278,7 +276,7 @@ class _HomePageState extends State<HomePage> {
         child: Image(image: images.AssetImage('assets/images/logo.png')),
       ),
       accountName: Text('${employee.nombre} ${employee.apellidos}'),
-      accountEmail: Text(employee.categoria?.toUpperCase() ?? ''),
+      accountEmail: Text(employee.categoriaPersona?.toUpperCase() ?? ''),
     );
   }
 

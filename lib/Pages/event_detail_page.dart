@@ -398,7 +398,7 @@ class _PersonalOwnState extends State<PersonalOwn> {
 
         return CheckboxListTile(
           title: Text(employee.nombre ?? ''),
-          subtitle: Text('Categoría: ${employee.categoria}'),
+          subtitle: Text('Categoría: ${employee.categoriaPersona ?? ''}'),
           value: isSelected,
           onChanged: (bool? value) {
             if (value != null) {

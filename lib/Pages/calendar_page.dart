@@ -42,8 +42,8 @@ class _CalendarPageState extends State<CalendarPage> {
 
     try {
       final events =
-          employee.categoria == 'gerente' ||
-                  employee.categoria == 'organización'
+          employee.categoriaPersona == 'gerente' ||
+                  employee.categoriaPersona == 'organización'
               ? await _eventService.getEvents()
               : await _eventService.getEventsByEmployee(employee.dni ?? '');
 

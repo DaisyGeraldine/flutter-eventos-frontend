@@ -1,54 +1,61 @@
 class User {
   final String dni;
-  final String email;
-  final double contadorHoras;
-  final String estado;
-  final double salario;
+  final String nombre;
+  final String apellidos;
+  final String direccion;
+  final String? numSS;
+  final String? categoriaPersona;
+  final int? contratosHoras;
+  final DateTime? fechaAlta;
+  final String? estado;
+  final String? email;
+  final String? telefono;
 
   User({
     required this.dni,
-    required this.email,
-    required this.contadorHoras,
-    required this.estado,
-    required this.salario,
+    required this.nombre,
+    required this.apellidos,
+    required this.direccion,
+    this.numSS,
+    this.categoriaPersona,
+    this.contratosHoras,
+    this.fechaAlta,
+    this.estado,
+    this.email,
+    this.telefono,
   });
-
-  // Create a copy of this user with potentially new values
-  User copyWith({
-    String? dni,
-    String? email,
-    String? estado,
-    double? contadorHoras,
-    double? salario,
-  }) {
-    return User(
-      dni: dni ?? this.dni,
-      email: email ?? this.email,
-      contadorHoras: contadorHoras ?? 0.0,
-      estado: estado ?? '',
-      salario: salario ?? 0.0,
-    );
-  }
 
   // Convert user to JSON
   Map<String, dynamic> toJson() {
     return {
-      'id': dni,
-      'email': email,
-      'contadorHoras': contadorHoras,
+      'dni': dni,
+      'nombre': nombre,
+      'apellidos': apellidos,
+      'direccion': direccion,
+      'numSS': numSS,
+      'categoria': categoriaPersona,
+      'contratosHoras': contratosHoras,
+      'fechaAlta': fechaAlta?.toIso8601String(),
       'estado': estado,
-      'salario': salario,
+      'email': email,
+      'telefono': telefono,
     };
   }
 
   // Create user from JSON
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      dni: (json['dni'] ?? '').toString(),
-      email: json['email'] ?? '',
-      contadorHoras: (json['contadorHoras'] ?? 0.0).toDouble(),
-      estado: json['estado'] ?? '',
-      salario: (json['salario'] ?? 0.0).toDouble(),
+      dni: json['dni'],
+      nombre: json['nombre'],
+      apellidos: json['apellidos'],
+      direccion: json['direccion'],
+      numSS: json['numSS'],
+      categoriaPersona: json['categoriaPersona'],
+      contratosHoras: json['contratosHoras'],
+      fechaAlta: DateTime.parse(json['fechaAlta']),
+      estado: json['estado'],
+      email: json['email'],
+      telefono: json['telefono'],
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/employee.dart';
 import 'package:flutter_application_2/models/user.dart';
-import 'package:flutter_application_2/service/auth_serivce.dart';
+import 'package:flutter_application_2/service/auth_service.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 class Checkhours extends StatelessWidget {
@@ -30,9 +30,10 @@ class Checkhours extends StatelessWidget {
             if (!snapshot.hasData) {
               return Center(child: Text("No se encontraron datos del usuario"));
             }
-            final User user = snapshot.data!;
+            final Map<String, dynamic> user = snapshot.data!;
             final double maxHours = 150.0;
-            final double hoursWorked = snapshot.data!.contadorHoras.toDouble();
+            final double hoursWorked =
+                user['contratosHoras']?.toDouble() ?? 0.0;
             final double hoursRemaining = maxHours - hoursWorked;
 
             // Validación para evitar división por cero y valores negativos

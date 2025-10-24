@@ -4,10 +4,15 @@ class Employee {
   String? dni;
   String? nombre;
   String? apellidos;
+  String? direccion;
   String? numSS;
-  String? categoria; // 'gerente', 'organizacion', 'mozo', 'tecnico', 'almacen'
-  String? email;
+  String?
+  categoriaPersona; // 'gerente', 'organizacion', 'encargadoAlmacen', 'mozo', 'tecnicoLuces', 'tecnicoSonido'
+  int? contratosHoras;
+  DateTime? fechaAlta;
   String? estado;
+  String? email;
+  String? telefono;
 
   // Constructor para otros empleados
   Employee.newInstance();
@@ -16,17 +21,21 @@ class Employee {
     return _instance;
   }
 
-  bool get esGerente => categoria == 'gerente';
-  bool get esOrganizacion => categoria == 'organización';
+  bool get esGerente => categoriaPersona == 'gerente';
+  bool get esOrganizacion => categoriaPersona == 'organización';
   bool get esRolLimitado => !esGerente && !esOrganizacion;
 
   void fromJson(Map<String, dynamic> json) {
     dni = json['dni'];
     nombre = json['nombre'];
     apellidos = json['apellidos'];
+    direccion = json['direccion'];
     numSS = json['numSS'];
-    categoria = json['categoria'];
+    categoriaPersona = json['categoriaPersona'];
     email = json['email'];
+    telefono = json['telefono'];
+    contratosHoras = json['contratosHoras'];
+    fechaAlta = DateTime.parse(json['fechaAlta']);
     estado =
         json['estado'] ??
         'disponible'; // Default to 'disponible' if not provided
@@ -40,14 +49,16 @@ class Employee {
 
   Map<String, dynamic> toJson() {
     return {
-      'dni': this.dni,
-      'nombre': this.nombre,
-      'apellidos': this.apellidos,
-      'numSS': this.numSS,
-      'categoria': this.categoria,
-      'email': this.email,
-      'estado':
-          this.estado ?? 'disponible', // Default to 'disponible' if not set
+      'dni': dni,
+      'nombre': nombre,
+      'apellidos': apellidos,
+      'numSS': numSS,
+      'categoriaPersona': categoriaPersona,
+      'email': email,
+      'estado': estado ?? 'disponible', // Default to 'disponible' if not set
+      'telefono': telefono,
+      'contratosHoras': contratosHoras,
+      'fechaAlta': fechaAlta?.toIso8601String(),
     };
   }
 
