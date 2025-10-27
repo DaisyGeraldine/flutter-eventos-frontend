@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/employee.dart';
 import 'package:flutter_application_2/models/event.dart';
+import 'package:flutter_application_2/service/auth_service.dart';
 import 'package:flutter_application_2/service/event-service.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -40,55 +41,57 @@ class _CalendarPageState extends State<CalendarPage> {
       _errorMessage = '';
     });
 
-    try {
-      final events =
-          employee.categoriaPersona == 'gerente' ||
-                  employee.categoriaPersona == 'organización'
-              ? await _eventService.getEvents()
-              : await _eventService.getEventsByEmployee(employee.dni ?? '');
+    // try {
+    final ResponseResult<List<Event>> resultEvents =
+        employee.categoriaPersona == 'gerente' ||
+                employee.categoriaPersona == 'organización'
+            ? await _eventService.getEvents()
+            : await _eventService.getEventsByEmployee(employee.dni ?? '');
 
-      // Limpiar eventos anteriores
-      _events.clear();
+    // Limpiar eventos anteriores
+    _events.clear();
 
-      // Organizar eventos por fecha
-      for (final event in events) {
-        final startDateKey = DateTime(
-          event.fechaIni.year,
-          event.fechaIni.month,
-          event.fechaIni.day,
-        );
+    final List<Event> events = resultEvents.data ?? [];
 
-        // considerar el la lista de eventos la fechaFin
-        final endDateKey = DateTime(
-          event.fechaFin.year,
-          event.fechaFin.month,
-          event.fechaFin.day,
-        );
+    // Organizar eventos por fecha
+    for (final event in events) {
+      final startDateKey = DateTime(
+        event.fechaIni.year,
+        event.fechaIni.month,
+        event.fechaIni.day,
+      );
 
-        if (_events[startDateKey] == null) {
-          _events[startDateKey] = [];
-        }
-        _events[startDateKey]!.add(event);
+      // considerar el la lista de eventos la fechaFin
+      final endDateKey = DateTime(
+        event.fechaFin.year,
+        event.fechaFin.month,
+        event.fechaFin.day,
+      );
 
-        // Agregar el evento a la fecha de finalización
-        if (startDateKey != endDateKey) {
-          if (_events[endDateKey] == null) {
-            _events[endDateKey] = [];
-          }
-          _events[endDateKey]!.add(event);
-        }
+      if (_events[startDateKey] == null) {
+        _events[startDateKey] = [];
       }
+      _events[startDateKey]!.add(event);
 
-      setState(() {
-        _selectedEvents = _events[_selectedDay!] ?? [];
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-        _errorMessage = 'Error al cargar eventos: ${e.toString()}';
-      });
+      // Agregar el evento a la fecha de finalización
+      if (startDateKey != endDateKey) {
+        if (_events[endDateKey] == null) {
+          _events[endDateKey] = [];
+        }
+        _events[endDateKey]!.add(event);
+      }
     }
+
+    setState(() {
+      _selectedEvents = _events[_selectedDay!] ?? [];
+      _isLoading = false;
+    });
+    // } catch (e) {
+    //   setState(() {
+    //     _isLoading = false;
+    //     _errorMessage = 'Error al cargar eventos: ${e.toString()}';
+    //   });
+    // }
   }
 
   @override
@@ -249,24 +252,24 @@ class _CalendarPageState extends State<CalendarPage> {
                     color: Colors.blue,
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: _getStatusColor(event.estado!).withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    event.estado!.toUpperCase(),
-                    style: TextStyle(
-                      color: _getStatusColor(event.estado!),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
+                // Container(
+                //   padding: const EdgeInsets.symmetric(
+                //     horizontal: 8,
+                //     vertical: 4,
+                //   ),
+                //   decoration: BoxDecoration(
+                //     color: _getStatusColor(event.estado!).withOpacity(0.2),
+                //     borderRadius: BorderRadius.circular(12),
+                //   ),
+                //   child: Text(
+                //     event.estado!.toUpperCase(),
+                //     style: TextStyle(
+                //       color: _getStatusColor(event.estado!),
+                //       fontWeight: FontWeight.bold,
+                //       fontSize: 12,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             const Divider(),
@@ -274,22 +277,22 @@ class _CalendarPageState extends State<CalendarPage> {
               Icons.calendar_today,
               '${_formatDate(event.fechaIni)} - ${_formatDate(event.fechaFin)}',
             ),
-            _buildDetailRow(
-              Icons.access_time,
-              'Hora inicio: ${event.horaPrevistaIni.format(context)}',
-            ),
+            // _buildDetailRow(
+            //   Icons.access_time,
+            //   'Hora inicio: ${event.horaPrevistaIni.format(context)}',
+            // ),
             _buildDetailRow(
               Icons.attach_money,
-              'Costo: \$${event.coste.toStringAsFixed(0)}',
+              'Costo: \$${event.duracion.toStringAsFixed(0)}',
             ),
-            _buildDetailRow(
-              Icons.account_balance_wallet,
-              'Presupuesto: \$${event.presupuestoInicial.toStringAsFixed(0)} (inicial)',
-            ),
-            _buildDetailRow(
-              Icons.account_balance_wallet,
-              'Presupuesto: \$${event.presupuestoModificado.toStringAsFixed(0)} (modificado)',
-            ),
+            // _buildDetailRow(
+            //   Icons.account_balance_wallet,
+            //   'Presupuesto: \$${event.presupuestoInicial.toStringAsFixed(0)} (inicial)',
+            // ),
+            // _buildDetailRow(
+            //   Icons.account_balance_wallet,
+            //   'Presupuesto: \$${event.presupuestoModificado.toStringAsFixed(0)} (modificado)',
+            // ),
           ],
         ),
       ),

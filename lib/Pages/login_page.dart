@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as images;
 import 'package:flutter_application_2/Pages/home_page.dart';
+import 'package:flutter_application_2/models/user.dart';
 import 'package:flutter_application_2/service/auth_service.dart';
 import 'package:flutter_application_2/utils/preference.dart';
 
@@ -184,17 +185,17 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = true;
     });
     //try {
-    ResponseResult result = await _authService.login(
+    ResponseResult<User> result = await _authService.login(
       _emailController.text.trim(),
       _passwordController.text,
     );
 
-    if (result.success) {
+    if (result.success && result.hasData) {
       if (mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(dni: result.data!['dni']),
+            builder: (context) => HomePage(dni: result.data!.dni),
           ),
         );
       }

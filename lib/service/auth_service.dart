@@ -1,14 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter_application_2/models/employee.dart';
 import 'package:flutter_application_2/models/user.dart';
 import 'package:flutter_application_2/utils/preference.dart';
 import 'package:flutter_application_2/utils/urls.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  Future<ResponseResult> login(String email, String password) async {
+  Future<ResponseResult<User>> login(String email, String password) async {
     final response = await Urls.postUrl(
       '/auth/login',
       {'email': email, 'password': password},
@@ -16,19 +13,21 @@ class AuthService {
     );
 
     if (response['status'] == false) {
-      return ResponseResult(success: false, message: response['message']);
+      return ResponseResult.error(
+        message: response['message'] ?? 'Error en el login',
+        errorCode: 'LOGIN_FAILED',
+      );
     }
 
-    final user = User.fromJson(response['data']);
+    final User user = User.fromJson(response['data']);
 
     // Guardar usuario usando el servicio centralizado
     await PreferenceUtils.saveCurrentUser(user.toJson());
     Employee().fromJson(response['data']);
 
-    return ResponseResult(
-      success: true,
-      message: response['message'],
-      data: user.toJson(),
+    return ResponseResult<User>.success(
+      message: response['message'] ?? 'Login exitoso',
+      data: user,
     );
   }
 
@@ -53,10 +52,69 @@ class AuthService {
   }
 }
 
-class ResponseResult {
+class ResponseResult<T> {
   final bool success;
   final String message;
-  final Map<String, dynamic>? data;
+  final T? data;
+  final String? errorCode;
+  final int? statusCode;
 
-  ResponseResult({required this.success, required this.message, this.data});
+  ResponseResult({
+    required this.success,
+    required this.message,
+    this.data,
+    this.errorCode,
+    this.statusCode,
+  });
+
+  // Factory constructors para casos comunes
+  factory ResponseResult.success({
+    required String message,
+    T? data,
+    int? statusCode,
+  }) {
+    return ResponseResult<T>(
+      success: true,
+      message: message,
+      data: data,
+      statusCode: statusCode,
+    );
+  }
+
+  factory ResponseResult.error({
+    required String message,
+    String? errorCode,
+    int? statusCode,
+  }) {
+    return ResponseResult<T>(
+      success: false,
+      message: message,
+      errorCode: errorCode,
+      statusCode: statusCode,
+    );
+  }
+
+  // Método para verificar si hay datos
+  bool get hasData => data != null;
+
+  // Método para obtener datos como mapa
+  Map<String, dynamic>? get asMap {
+    if (data is Map<String, dynamic>) {
+      return data as Map<String, dynamic>;
+    }
+    return null;
+  }
+
+  // Método para obtener datos como lista
+  List<T>? get asList {
+    if (data is List<T>) {
+      return data as List<T>;
+    }
+    return null;
+  }
+
+  @override
+  String toString() {
+    return 'ResponseResult(success: $success, message: $message, hasData: $hasData)';
+  }
 }
