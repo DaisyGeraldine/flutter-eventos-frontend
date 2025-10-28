@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Event {
   final String cod;
   final String nombre;
@@ -12,10 +10,12 @@ class Event {
   final String direccion;
   final int aforo;
   final int m2;
-  final String anotaciones;
+  final String? anotaciones;
   // final double presupuestoInicial;
   // final double presupuestoModificado;
-  // final String? estado;
+  final String dniUsuario;
+  final String nombreUsuario;
+  final String? estado;
 
   Event({
     required this.cod,
@@ -32,7 +32,9 @@ class Event {
     required this.anotaciones,
     // required this.presupuestoInicial,
     // required this.presupuestoModificado,
-    // required this.estado,
+    required this.dniUsuario,
+    required this.nombreUsuario,
+    required this.estado,
   });
 
   // Convert event to JSON
@@ -52,7 +54,9 @@ class Event {
       'anotaciones': anotaciones,
       // 'presupuestoInicial': presupuestoInicial,
       // 'presupuestoModificado': presupuestoModificado,
-      // 'estado': estado,
+      'dniUsuario': dniUsuario,
+      'nombreUsuario': nombreUsuario,
+      'estado': estado,
     };
   }
 
@@ -63,22 +67,24 @@ class Event {
     return Event(
       cod: json['cod'],
       nombre: json['nombre'],
-      descripcionMaterial: json['descripcionMaterial'],
-      descripcionPersonal: json['descripcionPersonal'],
+      descripcionMaterial: json['descripcionMaterial'] ?? '',
+      descripcionPersonal: json['descripcionPersonal'] ?? '',
       fechaIni: DateTime.parse(json['fechaIni']),
       fechaFin: DateTime.parse(json['fechaFin']),
       // horaPrevistaIni: TimeOfDay(
       //   hour: int.parse(timeParts[0]),
       //   minute: int.parse(timeParts[1]),
       // ),
-      duracion: json['duracion'].toDouble(),
-      direccion: json['direccion'],
-      aforo: json['aforo'],
-      m2: json['m2'],
-      anotaciones: json['anotaciones'],
+      duracion: json['duracion'].toDouble() ?? 0.0,
+      direccion: json['direccion'] ?? '',
+      aforo: json['aforo'] ?? 0,
+      m2: json['m2'] ?? 0,
+      anotaciones: json['anotaciones'] ?? '',
       // presupuestoInicial: json['presupuestoInicial'].toDouble(),
       // presupuestoModificado: json['presupuestoModificado'].toDouble(),
-      // estado: json['estado'] ?? '',
+      dniUsuario: json['dniUsuario'],
+      nombreUsuario: json['nombreUsuario'],
+      estado: json['estado'] ?? '',
     );
   }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_application_2/models/event.dart';
 import 'package:flutter_application_2/models/request_event.dart';
 import 'package:flutter_application_2/service/auth_service.dart';
+import 'package:flutter_application_2/utils/response_result.dart';
 import 'package:flutter_application_2/utils/urls.dart';
 import 'package:http/http.dart' as http;
 

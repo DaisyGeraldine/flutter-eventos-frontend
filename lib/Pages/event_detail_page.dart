@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/employee.dart';
+import 'package:flutter_application_2/models/event.dart';
 import 'package:flutter_application_2/models/own_material.dart';
 import 'package:flutter_application_2/models/request_event.dart';
 import 'package:flutter_application_2/service/employee_service.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_application_2/utils/functions_date.dart';
 import 'package:intl/intl.dart';
 
 class EventDetailPage extends StatefulWidget {
-  final RequestEvent? requestEvent;
+  final Event? requestEvent;
   const EventDetailPage({super.key, this.requestEvent});
 
   @override
@@ -33,6 +34,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final evento = widget.requestEvent!.toJson();
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -48,165 +50,260 @@ class _EventDetailPageState extends State<EventDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Text(
-              'Detalles del Evento',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              width: size.width,
-              decoration: BoxDecoration(
-                color: Colors.yellow[50],
-                border: Border.all(color: Colors.yellow[500]!),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildInfoRow('Código', widget.requestEvent?.cod),
-                    _buildInfoRow(
-                      'Descripción Material',
-                      widget.requestEvent?.descripcionMaterial,
-                    ),
-                    _buildInfoRow(
-                      'Descripción Personal',
-                      widget.requestEvent?.descripcionPersonal,
-                    ),
-                    _buildInfoRow(
-                      'Fecha de Inicio',
-                      formatDate(widget.requestEvent?.fechaIni),
-                    ),
-                    _buildInfoRow(
-                      'Fecha de Fin',
-                      formatDate(widget.requestEvent?.fechaFin),
-                    ),
-                    _buildInfoRow(
-                      'Duración',
-                      widget.requestEvent?.duracion.toString(),
-                    ),
-                    _buildInfoRow('Dirección', widget.requestEvent?.direccion),
-                    _buildInfoRow(
-                      'Aforo',
-                      widget.requestEvent?.aforo?.toString(),
-                    ),
-                    _buildInfoRow(
-                      'Metros cuadrados',
-                      widget.requestEvent?.m2?.toString(),
-                    ),
-                    _buildInfoRow('Estado', widget.requestEvent?.estado),
-                    _buildInfoRow(
-                      'Presupuesto',
-                      widget.requestEvent?.presupuesto?.toString(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 400,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // const Text(
+            //   'Detalles del Evento',
+            //   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            // ),
+            // const SizedBox(height: 16),
+            // Container(
+            //   width: size.width,
+            //   decoration: BoxDecoration(
+            //     color: Colors.yellow[50],
+            //     border: Border.all(color: Colors.yellow[500]!),
+            //     borderRadius: BorderRadius.circular(8.0),
+            //   ),
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(16.0),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         _buildInfoRow('Código', widget.requestEvent?.cod),
+            //         _buildInfoRow(
+            //           'Descripción Material',
+            //           widget.requestEvent?.descripcionMaterial,
+            //         ),
+            //         _buildInfoRow(
+            //           'Descripción Personal',
+            //           widget.requestEvent?.descripcionPersonal,
+            //         ),
+            //         _buildInfoRow(
+            //           'Fecha de Inicio',
+            //           formatDate(widget.requestEvent?.fechaIni),
+            //         ),
+            //         _buildInfoRow(
+            //           'Fecha de Fin',
+            //           formatDate(widget.requestEvent?.fechaFin),
+            //         ),
+            //         _buildInfoRow(
+            //           'Duración',
+            //           widget.requestEvent?.duracion.toString(),
+            //         ),
+            //         _buildInfoRow('Dirección', widget.requestEvent?.direccion),
+            //         _buildInfoRow(
+            //           'Aforo',
+            //           widget.requestEvent?.aforo?.toString(),
+            //         ),
+            //         _buildInfoRow(
+            //           'Metros cuadrados',
+            //           widget.requestEvent?.m2?.toString(),
+            //         ),
+            //         _buildInfoRow('Estado', widget.requestEvent?.estado),
+            //         // _buildInfoRow(
+            //         //   'Presupuesto',
+            //         //   widget.requestEvent?.presupuesto?.toString(),
+            //         // ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(height: 10),
+            // SizedBox(
+            //   height: 400,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Expanded(
+            //         child: Container(
+            //           padding: const EdgeInsets.all(8.0),
+            //           decoration: BoxDecoration(
+            //             border: Border.all(color: Colors.grey),
+            //             borderRadius: BorderRadius.circular(8.0),
+            //           ),
+            //           child: Column(
+            //             crossAxisAlignment: CrossAxisAlignment.start,
+            //             children: [
+            //               const Text(
+            //                 'Material:',
+            //                 style: TextStyle(
+            //                   fontSize: 16,
+            //                   fontWeight: FontWeight.bold,
+            //                 ),
+            //               ),
+            //               const SizedBox(height: 8),
+            //               Expanded(
+            //                 child: MaterialOwn(
+            //                   onSelectionChanged: _handleMaterialSelection,
+            //                 ),
+            //               ),
+            //               const SizedBox(height: 8),
+            //               Wrap(
+            //                 spacing: 8,
+            //                 children:
+            //                     _selectedMaterials.map((material) {
+            //                       return Chip(
+            //                         label: Text(material.descripcion),
+            //                         onDeleted: () {
+            //                           setState(() {
+            //                             _selectedMaterials.remove(material);
+            //                           });
+            //                         },
+            //                       );
+            //                     }).toList(),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       ),
+            //       SizedBox(width: 16),
+            //       Expanded(
+            //         child: Container(
+            //           padding: const EdgeInsets.all(8.0),
+            //           decoration: BoxDecoration(
+            //             border: Border.all(color: Colors.grey),
+            //             borderRadius: BorderRadius.circular(8.0),
+            //           ),
+            //           child: Column(
+            //             children: [
+            //               Text(
+            //                 'Personal: ',
+            //                 style: TextStyle(
+            //                   fontSize: 16,
+            //                   fontWeight: FontWeight.bold,
+            //                 ),
+            //               ),
+            //               const SizedBox(height: 8),
+            //               Expanded(
+            //                 child: PersonalOwn(
+            //                   onSelectionChanged: (selected) {
+            //                     // Aquí puedes manejar la selección de personal
+            //                   },
+            //                   descripcionSolicitada:
+            //                       widget.requestEvent?.descripcionPersonal,
+            //                 ),
+            //               ),
+            //               const SizedBox(height: 8),
+            //               Wrap(
+            //                 spacing: 8,
+            //                 children:
+            //                     _selectedEmployees.map((employee) {
+            //                       return Chip(
+            //                         label: Text(employee.nombre ?? ''),
+            //                         onDeleted: () {
+            //                           setState(() {
+            //                             _selectedEmployees.remove(employee);
+            //                           });
+            //                         },
+            //                       );
+            //                     }).toList(),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // const SizedBox(height: 20),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     // Acción del botón
+            //   },
+            //   child: const Text('Guardar Cambios'),
+            // ),
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8.0),
+                  // Título
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          "🎉 ${evento['nombre']}",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Material:',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Expanded(
-                            child: MaterialOwn(
-                              onSelectionChanged: _handleMaterialSelection,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Wrap(
-                            spacing: 8,
-                            children:
-                                _selectedMaterials.map((material) {
-                                  return Chip(
-                                    label: Text(material.descripcion),
-                                    onDeleted: () {
-                                      setState(() {
-                                        _selectedMaterials.remove(material);
-                                      });
-                                    },
-                                  );
-                                }).toList(),
-                          ),
-                        ],
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(context),
                       ),
-                    ),
+                    ],
                   ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8.0),
+                  const Divider(),
+
+                  // Información general
+                  Text(
+                    "📅 Fecha: ${evento['fechaIni'].toString().split('T').first} - "
+                    "${evento['fechaFin'].toString().split('T').first}",
+                  ),
+                  Text("👤 Usuario: ${evento['nombreUsuario']}"),
+                  Text("🏠 Dirección: ${evento['direccion']}"),
+                  Text("🕓 Duración: ${evento['duracion']} horas"),
+                  const SizedBox(height: 12),
+
+                  // Material solicitado
+                  const Text(
+                    "📦 Material solicitado:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(evento['descripcionMaterial'] ?? "Sin materiales"),
+                  const SizedBox(height: 12),
+
+                  // Personal solicitado
+                  const Text(
+                    "👥 Personal solicitado:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    evento['descripcionPersonal'] ?? "Sin personal asignado",
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Anotaciones
+                  const Text(
+                    "🗒️ Anotaciones:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(evento['anotaciones'] ?? "Sin anotaciones"),
+                  const SizedBox(height: 16),
+
+                  // Botones de acción
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text("Cerrar"),
                       ),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Personal: ',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Expanded(
-                            child: PersonalOwn(
-                              onSelectionChanged: (selected) {
-                                // Aquí puedes manejar la selección de personal
-                              },
-                              descripcionSolicitada:
-                                  widget.requestEvent?.descripcionPersonal,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Wrap(
-                            spacing: 8,
-                            children:
-                                _selectedEmployees.map((employee) {
-                                  return Chip(
-                                    label: Text(employee.nombre ?? ''),
-                                    onDeleted: () {
-                                      setState(() {
-                                        _selectedEmployees.remove(employee);
-                                      });
-                                    },
-                                  );
-                                }).toList(),
-                          ),
-                        ],
-                      ),
-                    ),
+                      const SizedBox(width: 8),
+                      if (evento['estado'] == 'Pendiente') ...[
+                        ElevatedButton(
+                          onPressed: () {
+                            // Acción: verificar disponibilidad
+                            // o iniciar preparación (según flujo)
+                          },
+                          child: const Text("Verificar disponibilidad"),
+                        ),
+                      ] else if (evento['estado'] == 'En preparación') ...[
+                        ElevatedButton(
+                          onPressed: () {
+                            // Acción: iniciar ejecución
+                          },
+                          child: const Text("Iniciar ejecución"),
+                        ),
+                      ],
+                    ],
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Acción del botón
-              },
-              child: const Text('Guardar Cambios'),
             ),
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:flutter_application_2/models/employee.dart';
 import 'package:flutter_application_2/models/event.dart';
 import 'package:flutter_application_2/service/auth_service.dart';
 import 'package:flutter_application_2/service/event-service.dart';
+import 'package:flutter_application_2/utils/response_result.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -281,10 +282,10 @@ class _CalendarPageState extends State<CalendarPage> {
             //   Icons.access_time,
             //   'Hora inicio: ${event.horaPrevistaIni.format(context)}',
             // ),
-            _buildDetailRow(
-              Icons.attach_money,
-              'Costo: \$${event.duracion.toStringAsFixed(0)}',
-            ),
+            // _buildDetailRow(
+            //   Icons.attach_money,
+            //   'Costo: \$${event.duracion.toStringAsFixed(0)}',
+            // ),
             // _buildDetailRow(
             //   Icons.account_balance_wallet,
             //   'Presupuesto: \$${event.presupuestoInicial.toStringAsFixed(0)} (inicial)',
