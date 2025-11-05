@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as images;
 import 'package:flutter_application_2/models/employee.dart';
-import 'package:flutter_application_2/service/employee_service.dart';
 
 class HomePage extends StatefulWidget {
   final String dni;
@@ -12,7 +10,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final EmployeeService _employeeService = EmployeeService();
+  // final EmployeeService _employeeService = EmployeeService();
   final employee = Employee();
   bool isLoading = false;
 
@@ -273,7 +271,7 @@ class _HomePageState extends State<HomePage> {
     return UserAccountsDrawerHeader(
       decoration: BoxDecoration(color: Color(0xff142047)),
       currentAccountPicture: CircleAvatar(
-        child: Image(image: images.AssetImage('assets/images/logo.png')),
+        child: Image(image: AssetImage('assets/images/logo.png')),
       ),
       accountName: Text('${employee.nombre} ${employee.apellidos}'),
       accountEmail: Text(employee.categoriaPersona?.toUpperCase() ?? ''),

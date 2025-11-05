@@ -36,13 +36,13 @@ dependencies:
   cupertino_icons: ^1.0.8
   provider: ^6.1.5
   english_words: ^4.0.0
-  http: ^1.4.0
-  shared_preferences: ^2.5.3
-  syncfusion_flutter_charts: ^29.2.7
-  pie_chart: ^5.4.0
-  flutter_secure_storage: ^9.2.4
-  table_calendar: ^3.2.0
-  intl: ^0.20.2
+  http: ^1.4.0 # Para hacer peticiones HTTP
+  shared_preferences: ^2.5.3 # Para almacenar pares clave-valor simples
+  syncfusion_flutter_charts: ^29.2.7 # Para gráficos y diagramas
+  pie_chart: ^5.4.0 # Para mostrar gráficos de pastel
+  flutter_secure_storage: ^9.2.4 # Para almacenamiento seguro de datos sensibles
+  table_calendar: ^3.2.0 # Para mostrar un calendario
+  intl: ^0.20.2 # Para internacionalización y localización
 
 dev_dependencies:
   flutter_test:

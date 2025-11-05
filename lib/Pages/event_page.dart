@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/Pages/event_detail_page.dart';
+import 'package:flutter_application_2/Pages/verify_personal_page.dart';
 import 'package:flutter_application_2/models/employee.dart';
 import 'package:flutter_application_2/models/event.dart';
-import 'package:flutter_application_2/models/request_event.dart';
-import 'package:flutter_application_2/service/event-service.dart';
+import 'package:flutter_application_2/service/event_service.dart';
 import 'package:intl/intl.dart';
 
 class EventsPage extends StatefulWidget {
@@ -69,144 +69,6 @@ class _EventsPageState extends State<EventsPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
-                    // const Padding(
-                    //   padding: EdgeInsets.all(16.0),
-                    //   child: Text(
-                    //     'Solicitudes de Eventos',
-                    //     style: TextStyle(
-                    //       fontSize: 24,
-                    //       fontWeight: FontWeight.bold,
-                    //     ),
-                    //   ),
-                    // ),
-
-                    // Expanded(
-                    //   child: SingleChildScrollView(
-                    //     child: Table(
-                    //       border: TableBorder.all(),
-                    //       children: [
-                    //         TableRow(
-                    //           children: [
-                    //             Padding(
-                    //               padding: const EdgeInsets.all(8.0),
-                    //               child: Text(
-                    //                 'Evento',
-                    //                 style: TextStyle(
-                    //                   fontWeight: FontWeight.bold,
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //             Padding(
-                    //               padding: const EdgeInsets.all(8.0),
-                    //               child: Text(
-                    //                 'Descripción Material',
-                    //                 style: TextStyle(
-                    //                   fontWeight: FontWeight.bold,
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //             Padding(
-                    //               padding: const EdgeInsets.all(8.0),
-                    //               child: Text(
-                    //                 'Descripción Personal',
-                    //                 style: TextStyle(
-                    //                   fontWeight: FontWeight.bold,
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-
-                    //         // Aquí deberías agregar los eventos obtenidos de la API
-                    //         // Por ejemplo, si tienes una lista de eventos llamada `events`:
-                    //         ...eventRequest.map((event) {
-                    //           return TableRow(
-                    //             children: [
-                    //               Padding(
-                    //                 padding: const EdgeInsets.all(8.0),
-                    //                 child: TextButton(
-                    //                   onPressed: () {
-                    //                     Navigator.push(
-                    //                       context,
-                    //                       MaterialPageRoute(
-                    //                         builder:
-                    //                             (context) => EventDetailPage(
-                    //                               requestEvent: event,
-                    //                             ),
-                    //                       ),
-                    //                     );
-                    //                   },
-                    //                   child: Text(event.cod ?? 'Sin código'),
-                    //                 ),
-                    //               ),
-                    //               Padding(
-                    //                 padding: const EdgeInsets.all(8.0),
-                    //                 child: Text(
-                    //                   event.descripcionMaterial ??
-                    //                       'Sin descripción',
-                    //                 ),
-                    //               ),
-                    //               Padding(
-                    //                 padding: const EdgeInsets.all(8.0),
-                    //                 child: Text(
-                    //                   event.descripcionPersonal ??
-                    //                       'Sin descripción',
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           );
-                    //         }).toList(),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                    // Expanded(
-                    //   child: ListView.builder(
-                    //     itemCount: eventRequest.length,
-                    //     itemBuilder: (context, index) {
-                    //       final evento = eventRequest[index];
-                    //       return Card(
-                    //         margin: EdgeInsets.all(8),
-                    //         child: ExpansionTile(
-                    //           title: Text(evento.nombre),
-                    //           subtitle: Text(
-                    //             "${DateFormat('dd/MM/yyyy').format(evento.fechaIni)} "
-                    //             "| Estado: ${evento.estado}",
-                    //           ),
-                    //           children: [
-                    //             ListTile(
-                    //               title: Text("Ubicación: ${evento.direccion}"),
-                    //             ),
-                    //             ListTile(
-                    //               title: Text(
-                    //                 "Cliente: ${evento.nombreUsuario}",
-                    //               ),
-                    //             ),
-                    //             ListTile(
-                    //               title: Text(
-                    //                 "Duración: ${evento.duracion} horas",
-                    //               ),
-                    //             ),
-                    //             ListTile(
-                    //               title: Text(
-                    //                 "Aforo: ${evento.aforo} personas",
-                    //               ),
-                    //             ),
-                    //             ListTile(
-                    //               title: Text(
-                    //                 "Anotaciones: ${evento.anotaciones}",
-                    //               ),
-                    //             ),
-                    //             ButtonBar(
-                    //               alignment: MainAxisAlignment.end,
-                    //               children: _buildAcciones(evento),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       );
-                    //     },
-                    //   ),
-                    // ),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -338,6 +200,12 @@ class _EventsPageState extends State<EventsPage> {
   _verificarDisponibilidad(Event evento) {
     // Lógica para verificar disponibilidad
     print("Verificando disponibilidad para el evento ${evento.cod}");
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VerifyAvailabilityPage(event: evento),
+      ),
+    );
   }
 
   _iniciarEjecucion(Event evento) {

@@ -1,37 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter_application_2/models/event.dart';
 import 'package:flutter_application_2/models/request_event.dart';
-import 'package:flutter_application_2/service/auth_service.dart';
 import 'package:flutter_application_2/utils/response_result.dart';
 import 'package:flutter_application_2/utils/urls.dart';
-import 'package:http/http.dart' as http;
 
 class EventService {
-  static const String _baseUrl = 'http://localhost:3000/api';
-
   Future<ResponseResult<List<Event>>> getEvents() async {
-    // String url = "$_baseUrl/events";
-    // print('Solicitando eventos a: $url');
-    // //try {
-    // final response = await http
-    //     .get(Uri.parse(url), headers: {'Content-Type': 'application/json'})
-    //     .timeout(const Duration(seconds: 10));
-    // print(response);
-
-    // if (response.statusCode == 200) {
-    //   final data = jsonDecode(response.body);
-
-    //   final eventsData = data['data'] as List;
-    //   print('Eventos recibidos: ${eventsData.length}');
-    //   print('Datos del Evento: $eventsData');
-
-    //   return eventsData.map((eventJson) => Event.fromJson(eventJson)).toList();
-    // } else {
-    //   print('Error en la respuesta: ${response.statusCode}');
-    //   throw Exception('Error al cargar eventos: ${response.statusCode}');
-    // }
-
     final response = await Urls.getUrl('/events', {
       'Content-Type': 'application/json',
     });
@@ -160,5 +133,32 @@ class EventService {
               )
               .toList(),
     );
+  }
+
+  Future<ResponseResult<void>> prepareEvent({
+    required List<String> selectedInternalStaff,
+    required List<String> selectedExternalStaff,
+    required List<String> selectedInventoryMaterial,
+    required List<String> selectedRentalMaterial,
+    required String eventCode,
+  }) async {
+    final body = {
+      "eventCode": eventCode,
+      "staffInternal": selectedInternalStaff,
+      "staffExternal": selectedExternalStaff,
+      "materialsInventory": selectedInventoryMaterial,
+      "materialsRental": selectedRentalMaterial,
+    };
+    final response = await Urls.postUrl('/events/prepare', body, {
+      'Content-Type': 'application/json',
+    });
+
+    if (response['status'] == false) {
+      return ResponseResult.error(
+        message: response['message'] ?? 'Error al preparar el evento',
+      );
+    }
+
+    return ResponseResult.success(message: 'Evento preparado correctamente');
   }
 }

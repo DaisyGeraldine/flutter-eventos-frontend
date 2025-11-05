@@ -6,7 +6,7 @@ class Urls {
   // create un metodo postUrl que reciba un String path y retorne la url completa
   static Future<Map<String, dynamic>> postUrl(
     String path,
-    Map<String, String> body,
+    Map<String, dynamic> body,
     Map<String, String> headers,
   ) async {
     const String baseUrl = 'http://localhost:3000/api';
