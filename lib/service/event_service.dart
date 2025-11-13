@@ -136,22 +136,33 @@ class EventService {
   }
 
   Future<ResponseResult<void>> prepareEvent({
-    required List<String> selectedInternalStaff,
-    required List<String> selectedExternalStaff,
-    required List<String> selectedInventoryMaterial,
-    required List<String> selectedRentalMaterial,
     required String eventCode,
+    required DateTime fechaIni,
+    required DateTime fechaFin,
+    required DateTime horaPrevistaInicio,
+    required double presupuesto,
+    required List<Map<String, dynamic>> selectedInternalStaff,
+    required List<Map<String, dynamic>> selectedExternalStaff,
+    required List<Map<String, dynamic>> selectedInventoryMaterial,
+    required List<Map<String, dynamic>> selectedRentalMaterial,
   }) async {
     final body = {
       "eventCode": eventCode,
+      "fechaIni": fechaIni.toIso8601String(),
+      "fechaFin": fechaFin.toIso8601String(),
+      "horaPrevistaInicio": horaPrevistaInicio.toIso8601String(),
+      "presupuesto": presupuesto,
       "staffInternal": selectedInternalStaff,
       "staffExternal": selectedExternalStaff,
       "materialsInventory": selectedInventoryMaterial,
       "materialsRental": selectedRentalMaterial,
     };
-    final response = await Urls.postUrl('/events/prepare', body, {
-      'Content-Type': 'application/json',
-    });
+
+    final response = await Urls.postUrl(
+      '/events/prepare',
+      body,
+      {'Content-Type': 'application/json'},
+    );
 
     if (response['status'] == false) {
       return ResponseResult.error(

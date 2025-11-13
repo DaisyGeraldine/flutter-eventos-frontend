@@ -174,16 +174,17 @@ class _EventsPageState extends State<EventsPage> {
           style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
         ),
       );
-    } else if (evento.estado == "En preparación") {
-      acciones.add(
-        ElevatedButton.icon(
-          onPressed: () => _iniciarEjecucion(evento),
-          icon: const Icon(Icons.play_arrow),
-          label: const Text("Iniciar ejecución"),
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-        ),
-      );
     }
+    // } else if (evento.estado == "En preparación") {
+    //   acciones.add(
+    //     ElevatedButton.icon(
+    //       onPressed: () => _iniciarEjecucion(evento),
+    //       icon: const Icon(Icons.play_arrow),
+    //       label: const Text("Iniciar ejecución"),
+    //       style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+    //     ),
+    //   );
+    // }
 
     return acciones;
   }

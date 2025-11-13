@@ -27,6 +27,8 @@ class _VerifyAvailabilityPageState extends State<VerifyAvailabilityPage> {
   Set<String> selectedInventoryMaterial = {};
   Set<String> selectedRentalMaterial = {};
 
+  final TextEditingController _presupuestoController = TextEditingController();
+
   bool loading = true;
 
   @override
@@ -62,20 +64,72 @@ class _VerifyAvailabilityPageState extends State<VerifyAvailabilityPage> {
 
   Future<void> _confirm() async {
     final EventService _eventService = EventService();
+
+    final fechaInicio = widget.event!.fechaIni;
+    final fechaFin = widget.event!.fechaFin;
+    final horaPrevistaInicio = DateTime.now();
+    final double presupuesto =
+        double.tryParse(_presupuestoController.text) ?? 0.0;
+
+    // 🔹 Armar los datos correctos según tus modelos
+    final selectedInternalStaffData = internalStaff
+        .where((s) => selectedInternalStaff.contains(s.dni))
+        .map((s) => {
+              "dni": s.dni,
+              "fechaIni": fechaInicio.toIso8601String(),
+              "fechaFin": fechaFin.toIso8601String(),
+            })
+        .toList();
+
+    final selectedExternalStaffData = externalStaff
+        .where((s) => selectedExternalStaff.contains(s.dni))
+        .map((s) => {
+              "dni": s.dni,
+              "precio": s.precio,
+              "fechaIni": fechaInicio.toIso8601String(),
+              "fechaFin": fechaFin.toIso8601String(),
+            })
+        .toList();
+
+    final selectedInventoryMaterialData = inventoryMaterial
+        .where((m) => selectedInventoryMaterial.contains(m.cod))
+        .map((m) => {
+              "codMaterial": m.cod,
+              "precio": m.precio,
+              "fechaIni": fechaInicio.toIso8601String(),
+              "fechaFin": fechaFin.toIso8601String(),
+            })
+        .toList();
+
+    final selectedRentalMaterialData = rentalMaterial
+        .where((m) => selectedRentalMaterial.contains(m.cod))
+        .map((m) => {
+              "codMaterial": m.cod,
+              "precio": m.precio,
+              "fechaIni": fechaInicio.toIso8601String(),
+              "fechaFin": fechaFin.toIso8601String(),
+            })
+        .toList();
+
+    // 🔹 Enviar datos al backend
     final ResponseResult result = await _eventService.prepareEvent(
-      selectedInternalStaff: selectedInternalStaff.toList(),
-      selectedExternalStaff: selectedExternalStaff.toList(),
-      selectedInventoryMaterial: selectedInventoryMaterial.toList(),
-      selectedRentalMaterial: selectedRentalMaterial.toList(),
       eventCode: widget.event!.cod,
+      fechaIni: fechaInicio,
+      fechaFin: fechaFin,
+      horaPrevistaInicio: horaPrevistaInicio,
+      presupuesto: presupuesto,
+      selectedInternalStaff: selectedInternalStaffData,
+      selectedExternalStaff: selectedExternalStaffData,
+      selectedInventoryMaterial: selectedInventoryMaterialData,
+      selectedRentalMaterial: selectedRentalMaterialData,
     );
 
     if (result.success == true) {
       Navigator.pop(context, true);
     } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Error: ${result.message}")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${result.message}")),
+      );
     }
   }
 

@@ -110,14 +110,15 @@ class _EventDetailPageState extends State<EventDetailPage> {
                           },
                           child: const Text("Verificar disponibilidad"),
                         ),
-                      ] else if (evento['estado'] == 'En preparación') ...[
-                        ElevatedButton(
-                          onPressed: () {
-                            // Acción: iniciar ejecución
-                          },
-                          child: const Text("Iniciar ejecución"),
-                        ),
                       ],
+                      // ] else if (evento['estado'] == 'En preparación') ...[
+                      //   ElevatedButton(
+                      //     onPressed: () {
+                      //       // Acción: iniciar ejecución
+                      //     },
+                      //     child: const Text("Iniciar ejecución"),
+                      //   ),
+                      // ],
                     ],
                   ),
                 ],
