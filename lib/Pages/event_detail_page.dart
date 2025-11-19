@@ -39,16 +39,12 @@ class _EventDetailPageState extends State<EventDetailPage> {
                     children: [
                       Expanded(
                         child: Text(
-                          "🎉 ${evento['nombre']}",
+                          "${evento['nombre']}",
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.pop(context),
                       ),
                     ],
                   ),
@@ -97,16 +93,20 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text("Cerrar"),
-                      ),
-                      const SizedBox(width: 8),
+                      // TextButton(
+                      //   onPressed: () => Navigator.pop(context),
+                      //   child: const Text("Cerrar"),
+                      // ),
+                      // const SizedBox(width: 8),
                       if (evento['estado'] == 'Pendiente') ...[
                         ElevatedButton(
                           onPressed: () {
                             // Acción: verificar disponibilidad
-                            // o iniciar preparación (según flujo)
+                            Navigator.pushNamed(
+                              context,
+                              '/verify_personal',
+                              arguments: widget.requestEvent,
+                            );
                           },
                           child: const Text("Verificar disponibilidad"),
                         ),

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Event {
   final String cod;
   final String nombre;
@@ -15,6 +17,9 @@ class Event {
   // final double presupuestoModificado;
   final String dniUsuario;
   final String nombreUsuario;
+  final TimeOfDay? horaPrevistaInicio;
+  final double? presupuesto;
+  final double? presupuestoModificado;
   final String? estado;
 
   Event({
@@ -34,6 +39,9 @@ class Event {
     // required this.presupuestoModificado,
     required this.dniUsuario,
     required this.nombreUsuario,
+    required this.horaPrevistaInicio,
+    required this.presupuesto,
+    required this.presupuestoModificado,
     required this.estado,
   });
 
@@ -56,13 +64,21 @@ class Event {
       // 'presupuestoModificado': presupuestoModificado,
       'dniUsuario': dniUsuario,
       'nombreUsuario': nombreUsuario,
+      'horaPrevistaInicio': horaPrevistaInicio,
+      'presupuesto': presupuesto,
+      'presupuestoModificado': presupuestoModificado,
       'estado': estado,
     };
   }
 
   factory Event.fromJson(Map<String, dynamic> json) {
     // Parsea la hora de un string "HH:mm"
-    // final timeParts = (json['horaPrevistaIni'] as String).split(':');
+    final timeParts;
+    if (json['horaPrevistaInicio'] != null && json['horaPrevistaInicio'] is String) {
+      timeParts = (json['horaPrevistaInicio'] as String).split(':');
+    } else {
+      timeParts = ['0', '0'];
+    }
 
     return Event(
       cod: json['cod'],
@@ -84,6 +100,12 @@ class Event {
       // presupuestoModificado: json['presupuestoModificado'].toDouble(),
       dniUsuario: json['dniUsuario'],
       nombreUsuario: json['nombreUsuario'],
+      horaPrevistaInicio: TimeOfDay(
+        hour: int.parse(timeParts[0]),
+        minute: int.parse(timeParts[1]),
+      ),
+      presupuesto: json['presupuesto']?.toDouble() ?? 0.0,
+      presupuestoModificado: json['presupuestoModificado']?.toDouble() ?? 0.0,
       estado: json['estado'] ?? '',
     );
   }

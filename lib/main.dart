@@ -7,6 +7,7 @@ import 'package:flutter_application_2/Pages/messages_page.dart';
 import 'package:flutter_application_2/Pages/personal_page.dart';
 import 'package:flutter_application_2/Pages/store_page.dart';
 import 'package:flutter_application_2/Pages/tasks_page.dart';
+import 'package:flutter_application_2/Pages/verify_personal_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
         '/personal': (context) => PersonalPage(),
         '/tareas': (context) => TasksPage(),
         '/eventos': (context) => EventsPage(),
+        '/verify_personal': (context) => VerifyAvailabilityPage(
+              event: ModalRoute.of(context)!.settings.arguments as dynamic,
+            ),
         '/mensajes': (context) => MessagesPage(),
       },
       debugShowCheckedModeBanner: false,

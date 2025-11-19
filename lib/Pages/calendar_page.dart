@@ -253,24 +253,24 @@ class _CalendarPageState extends State<CalendarPage> {
                     color: Colors.blue,
                   ),
                 ),
-                // Container(
-                //   padding: const EdgeInsets.symmetric(
-                //     horizontal: 8,
-                //     vertical: 4,
-                //   ),
-                //   decoration: BoxDecoration(
-                //     color: _getStatusColor(event.estado!).withOpacity(0.2),
-                //     borderRadius: BorderRadius.circular(12),
-                //   ),
-                //   child: Text(
-                //     event.estado!.toUpperCase(),
-                //     style: TextStyle(
-                //       color: _getStatusColor(event.estado!),
-                //       fontWeight: FontWeight.bold,
-                //       fontSize: 12,
-                //     ),
-                //   ),
-                // ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: _getStatusColor(event.estado!).withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    event.estado!.toUpperCase(),
+                    style: TextStyle(
+                      color: _getStatusColor(event.estado!),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
               ],
             ),
             const Divider(),
@@ -278,22 +278,22 @@ class _CalendarPageState extends State<CalendarPage> {
               Icons.calendar_today,
               '${_formatDate(event.fechaIni)} - ${_formatDate(event.fechaFin)}',
             ),
-            // _buildDetailRow(
-            //   Icons.access_time,
-            //   'Hora inicio: ${event.horaPrevistaIni.format(context)}',
-            // ),
-            // _buildDetailRow(
-            //   Icons.attach_money,
-            //   'Costo: \$${event.duracion.toStringAsFixed(0)}',
-            // ),
-            // _buildDetailRow(
-            //   Icons.account_balance_wallet,
-            //   'Presupuesto: \$${event.presupuestoInicial.toStringAsFixed(0)} (inicial)',
-            // ),
-            // _buildDetailRow(
-            //   Icons.account_balance_wallet,
-            //   'Presupuesto: \$${event.presupuestoModificado.toStringAsFixed(0)} (modificado)',
-            // ),
+            _buildDetailRow(
+              Icons.access_time,
+              'Hora inicio: ${event.horaPrevistaInicio!.format(context)}',
+            ),
+            _buildDetailRow(
+              Icons.attach_money,
+              'Costo: \$${event.duracion.toStringAsFixed(0)}',
+            ),
+            _buildDetailRow(
+              Icons.account_balance_wallet,
+              'Presupuesto: \$${event.presupuesto!.toStringAsFixed(0)} (inicial)',
+            ),
+            _buildDetailRow(
+              Icons.account_balance_wallet,
+              'Presupuesto: \$${event.presupuestoModificado!.toStringAsFixed(0)} (modificado)',
+            ),
           ],
         ),
       ),
@@ -321,13 +321,13 @@ class _CalendarPageState extends State<CalendarPage> {
     switch (status.toLowerCase()) {
       case 'cancelado':
         return Colors.red;
-      case 'solicitado':
+      case 'Pendiente':
         return Colors.blue;
-      case 'preparado':
+      case 'En preparación':
         return Colors.orange;
-      case 'validado':
+      case 'En ejecución':
         return Colors.green;
-      case 'terminado':
+      case 'Finalizado':
         return Colors.grey[800]!;
       default:
         return Colors.grey;
