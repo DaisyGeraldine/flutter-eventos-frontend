@@ -179,7 +179,7 @@ class _MaterialFormPageState extends State<MaterialFormPage> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value != null && value.trim().isNotEmpty) {
-                            final precio = int.tryParse(value.trim());
+                            final precio = double.tryParse(value.trim());
                             if (precio == null) {
                               return 'Ingresa un precio válido';
                             }

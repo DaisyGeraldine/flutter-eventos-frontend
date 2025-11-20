@@ -3,13 +3,16 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 class Urls {
+
+  static const String urlMain = 'http://localhost:3000/api';
+  // static const String urlMain = 'http://10.70.24.185:3000/api';
   // create un metodo postUrl que reciba un String path y retorne la url completa
   static Future<Map<String, dynamic>> postUrl(
     String path,
     Map<String, dynamic> body,
     Map<String, String> headers,
   ) async {
-    const String baseUrl = 'http://localhost:3000/api';
+    const String baseUrl = Urls.urlMain;
     final String url = '$baseUrl$path';
     log('$url', name: 'URL completa POST');
     //completar el body con try catch
@@ -35,7 +38,7 @@ class Urls {
     String path,
     Map<String, String> headers,
   ) async {
-    const String baseUrl = 'http://localhost:3000/api';
+    const String baseUrl = Urls.urlMain;
     final String url = '$baseUrl$path';
     log('$url', name: 'URL completa GET');
     //completar el body con try catch
@@ -63,7 +66,7 @@ class Urls {
     Map<String, dynamic> body,
     Map<String, String> headers,
   ) async {
-    const String baseUrl = 'http://localhost:3000/api';
+    const String baseUrl = Urls.urlMain;
     final String url = '$baseUrl$path';
     log('$url', name: 'URL completa PUT');
     //completar el body con try catch
@@ -91,7 +94,7 @@ class Urls {
     String path,
     Map<String, String> headers,
   ) async {
-    const String baseUrl = 'http://localhost:3000/api';
+    const String baseUrl = Urls.urlMain;
     final String url = '$baseUrl$path';
     log('$url', name: 'URL completa DELETE');
     try {

@@ -46,11 +46,15 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image(image: images.AssetImage('assets/images/logo.png')),
+            SizedBox(
+              width: 200,
+              height: 200,
+              child: Image(image: images.AssetImage('assets/images/logo.png'))),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -60,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                   Text(
                     'Login',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black45,
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
@@ -69,8 +73,8 @@ class _LoginPageState extends State<LoginPage> {
                   Text(
                     'Bienvenido',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
+                      color: Colors.black45,
+                      fontSize: 15,
                       letterSpacing: 1.5,
                     ),
                   ),
@@ -78,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: const Color.fromARGB(115, 57, 17, 203).withOpacity(0.05),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
