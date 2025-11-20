@@ -31,13 +31,13 @@ class _HomePageState extends State<HomePage> {
       organizacion: true,
     ),
 
-    DrawerItem(
-      Icons.assignment,
-      'Tareas',
-      '/tareas',
-      gerente: true,
-      limitados: true,
-    ),
+    // DrawerItem(
+    //   Icons.assignment,
+    //   'Tareas',
+    //   '/tareas',
+    //   gerente: true,
+    //   limitados: true,
+    // ),
     DrawerItem(
       Icons.access_time,
       'Horas trabajadas',
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Icon(
                                   Icons.person,
-                                  color: Colors.green,
+                                  color: Colors.greenAccent,
                                   size: 32,
                                 ),
                                 SizedBox(width: 10),

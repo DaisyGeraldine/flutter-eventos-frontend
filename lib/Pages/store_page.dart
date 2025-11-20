@@ -167,7 +167,7 @@ class _StorePageState extends State<StorePage> with TickerProviderStateMixin {
       final result = await _materialService.addToInventory(inventoryItem);
 
       if (result.success) {
-        _showSnackBar('Material agregado al inventario', Colors.green);
+        _showSnackBar('Material agregado al inventario', Colors.greenAccent);
         _loadInventory();
       } else {
         _showSnackBar(result.message, Colors.red);
@@ -623,7 +623,7 @@ class _StorePageState extends State<StorePage> with TickerProviderStateMixin {
                           if (result.success) {
                             _showSnackBar(
                               'Estado actualizado exitosamente',
-                              Colors.green,
+                              Colors.greenAccent,
                             );
                             _loadInventory();
                           } else {
@@ -695,7 +695,7 @@ class _StorePageState extends State<StorePage> with TickerProviderStateMixin {
       final result = await _materialService.removeFromInventory(item.cod);
 
       if (result.success) {
-        _showSnackBar('Material quitado del inventario', Colors.green);
+        _showSnackBar('Material quitado del inventario', Colors.greenAccent);
         _loadInventory();
         _loadMaterials(); // Recargar materiales para actualizar indicadores
       } else {

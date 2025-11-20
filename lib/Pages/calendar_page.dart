@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/employee.dart';
 import 'package:flutter_application_2/models/event.dart';
-import 'package:flutter_application_2/service/auth_service.dart';
 import 'package:flutter_application_2/service/event_service.dart';
 import 'package:flutter_application_2/utils/response_result.dart';
 import 'package:intl/intl.dart';

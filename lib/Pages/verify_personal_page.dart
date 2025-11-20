@@ -66,9 +66,9 @@ class _VerifyAvailabilityPageState extends State<VerifyAvailabilityPage> {
   Future<void> _confirm() async {
     if (_presupuestoController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text("Por favor, ingresa el presupuesto"),
-          backgroundColor: Colors.orange,
+          backgroundColor: Colors.orange[700],
         ),
       );
       return;
@@ -151,7 +151,7 @@ class _VerifyAvailabilityPageState extends State<VerifyAvailabilityPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Evento preparado exitosamente"),
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.greenAccent,
         ),
       );
       Navigator.pop(context, true);
@@ -325,6 +325,30 @@ class _VerifyAvailabilityPageState extends State<VerifyAvailabilityPage> {
               const SizedBox(width: 8),
               Text(
                 "${evento.duracion} horas",
+                style: const TextStyle(color: Colors.white70, fontSize: 14),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              const Icon(Icons.person_rounded,
+              color: Colors.white70, size: 16),
+              const SizedBox(width: 8),
+              Text(
+                "Personal requerido: ${evento.descripcionPersonal}",
+                style: const TextStyle(color: Colors.white70, fontSize: 14),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              const Icon(Icons.category,
+              color: Colors.white70, size: 16),
+              const SizedBox(width: 8),
+              Text(
+                "Material requerido: ${evento.descripcionMaterial}",
                 style: const TextStyle(color: Colors.white70, fontSize: 14),
               ),
             ],

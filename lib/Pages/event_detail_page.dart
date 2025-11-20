@@ -108,27 +108,27 @@ class _EventDetailPageState extends State<EventDetailPage> {
 
     switch (estado.toLowerCase()) {
       case 'pendiente':
-        backgroundColor = Colors.orange;
+        backgroundColor = Colors.redAccent;
         textColor = Colors.white;
         icon = Icons.schedule;
         break;
       case 'en preparación':
-        backgroundColor = Colors.blue;
+        backgroundColor = Colors.amberAccent;
         textColor = Colors.white;
         icon = Icons.build;
         break;
       case 'en ejecución':
-        backgroundColor = Colors.green;
+        backgroundColor = Colors.greenAccent;
         textColor = Colors.white;
         icon = Icons.play_arrow;
         break;
-      case 'completado':
-        backgroundColor = Colors.purple;
+      case 'finalizado':
+        backgroundColor = Colors.purpleAccent;
         textColor = Colors.white;
         icon = Icons.check_circle;
         break;
       case 'cancelado':
-        backgroundColor = Colors.red;
+        backgroundColor = Colors.redAccent;
         textColor = Colors.white;
         icon = Icons.cancel;
         break;

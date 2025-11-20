@@ -300,19 +300,19 @@ class _EventsPageState extends State<EventsPage> {
 
     switch (estado.toLowerCase()) {
       case 'pendiente':
-        backgroundColor = Colors.red;
+        backgroundColor = Colors.redAccent;
         textColor = Colors.white;
         break;
       case 'en preparación':
-        backgroundColor = Colors.yellowAccent;
+        backgroundColor = Colors.amberAccent;
         textColor = Colors.black;
         break;
       case 'en ejecución':
-        backgroundColor = Colors.green[900]!;
+        backgroundColor = Colors.greenAccent;
         textColor = Colors.white;
         break;
       case 'finalizado':
-        backgroundColor = Colors.green;
+        backgroundColor = Colors.purpleAccent;
         textColor = Colors.white;
         break;
       case 'cancelado':
@@ -368,7 +368,7 @@ class _EventsPageState extends State<EventsPage> {
           icon: const Icon(Icons.verified_outlined, size: 16),
           label: const Text("Verificar"),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.orange[900],
+            backgroundColor: Colors.orange[500],
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),

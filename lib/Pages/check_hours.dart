@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/employee.dart';
-import 'package:flutter_application_2/models/user.dart';
 import 'package:flutter_application_2/service/auth_service.dart';
 import 'package:pie_chart/pie_chart.dart';
 
