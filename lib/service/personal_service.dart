@@ -103,7 +103,7 @@ class PersonalService {
   Future<ResponseResult<EmployeeComplete>> createEmpleado(EmployeeComplete empleado) async {
     try {
       final response = await Urls.postUrl(
-        '/empleados/complete',
+        '/staff/empleados/complete',
         empleado.toJson(),
         {'Content-Type': 'application/json'},
       );
@@ -133,7 +133,7 @@ class PersonalService {
   Future<ResponseResult<EmployeeComplete>> updateEmpleado(EmployeeComplete empleado) async {
     try {
       final response = await Urls.putUrl(
-        '/empleados/${empleado.dni}/complete',
+        '/staff/empleados/${empleado.dni}/complete',
         empleado.toJson(),
         {'Content-Type': 'application/json'},
       );
@@ -166,7 +166,7 @@ class PersonalService {
   ) async {
     try {
       final response = await Urls.putUrl(
-        '/empleados/$dni/estado',
+        '/staff/empleados/$dni/estado',
         {'estado': nuevoEstado.name},
         {'Content-Type': 'application/json'},
       );
@@ -195,7 +195,7 @@ class PersonalService {
   // Eliminar empleado completo
   Future<ResponseResult<void>> deleteEmpleado(String dni) async {
     try {
-      final response = await Urls.deleteUrl('/empleados/$dni/complete', {
+      final response = await Urls.deleteUrl('/staff/empleados/$dni/complete', {
         'Content-Type': 'application/json',
       });
 
@@ -328,7 +328,7 @@ class PersonalService {
   ) async {
     try {
       final response = await Urls.getUrl(
-        '/empleados/categoria/${categoria.name}',
+        '/staff/empleados/categoria/${categoria.name}',
         {'Content-Type': 'application/json'},
       );
 
@@ -362,7 +362,7 @@ class PersonalService {
     EstadoEmpleado estado,
   ) async {
     try {
-      final response = await Urls.getUrl('/empleados/estado/${estado.name}', {
+      final response = await Urls.getUrl('/staff/empleados/estado/${estado.name}', {
         'Content-Type': 'application/json',
       });
 
