@@ -446,7 +446,20 @@ class _VerifyAvailabilityPageState extends State<VerifyAvailabilityPage> {
   Widget _buildInternalStaffTile(Personal s) {
     return CheckboxListTile(
       title: Text("${s.nombre} ${s.apellidos}"),
-      subtitle: Text(s.category ?? 'Sin categoría'),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(s.category ?? 'Sin categoría'),
+          if (s.estado != null)
+            Text(
+              "Estado: ${s.estado}",
+              style: TextStyle(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        ],
+      ),
       value: selectedInternalStaff.contains(s.dni),
       onChanged:
           (v) => setState(() {
@@ -501,7 +514,20 @@ class _VerifyAvailabilityPageState extends State<VerifyAvailabilityPage> {
   Widget _buildInventoryMatTile(Materials m) {
     return CheckboxListTile(
       title: Text(m.descripcion ?? 'Sin descripción'),
-      subtitle: Text("Código: ${m.cod}"),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Código: ${m.cod}"),
+          if (m.estado != null)
+            Text(
+              "Estado: ${m.estado}",
+              style: TextStyle(
+                color: Colors.green,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        ],
+      ),
       value: selectedInventoryMaterial.contains(m.cod),
       onChanged:
           (v) => setState(() {

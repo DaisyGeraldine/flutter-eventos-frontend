@@ -83,7 +83,7 @@ class _PersonalPageState extends State<PersonalPage>
     // Filtrar por estado
     if (_filterEstado != 'Todos') {
       final estado = EstadoEmpleado.values.firstWhere(
-        (e) => e.name == _filterEstado.toLowerCase(),
+        (e) => e.name.toLowerCase() == _filterEstado.toLowerCase(),
         orElse: () => EstadoEmpleado.disponible,
       );
       filtered = filtered.where((e) => e.estado == estado).toList();
@@ -92,7 +92,7 @@ class _PersonalPageState extends State<PersonalPage>
     // Filtrar por categoría
     if (_filterCategoria != 'Todas') {
       final categoria = CategoriaPersona.values.firstWhere(
-        (c) => c.name == _filterCategoria.toLowerCase(),
+        (c) => c.name.toLowerCase() == _filterCategoria.toLowerCase(),
         orElse: () => CategoriaPersona.mozo,
       );
       filtered =

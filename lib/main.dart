@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/Pages/calendar_page.dart';
 import 'package:flutter_application_2/Pages/check_hours.dart';
+import 'package:flutter_application_2/Pages/event_detail_page.dart';
 import 'package:flutter_application_2/Pages/event_page.dart';
 import 'package:flutter_application_2/Pages/login_page.dart';
 import 'package:flutter_application_2/Pages/messages_page.dart';
@@ -26,7 +27,12 @@ class MyApp extends StatelessWidget {
         '/personal': (context) => PersonalPage(),
         '/tareas': (context) => TasksPage(),
         '/eventos': (context) => EventsPage(),
-        '/verify_personal': (context) => VerifyAvailabilityPage(
+        '/event_detail':
+            (context) => EventDetailPage(
+              event: ModalRoute.of(context)!.settings.arguments as dynamic,
+            ),
+        '/verify_personal':
+            (context) => VerifyAvailabilityPage(
               event: ModalRoute.of(context)!.settings.arguments as dynamic,
             ),
         '/mensajes': (context) => MessagesPage(),

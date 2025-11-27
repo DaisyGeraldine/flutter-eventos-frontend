@@ -1,4 +1,5 @@
 import 'package:flutter_application_2/models/employee.dart';
+import 'package:flutter_application_2/models/event.dart';
 import 'package:flutter_application_2/models/persona.dart';
 import 'package:flutter_application_2/models/personal.dart';
 import 'package:flutter_application_2/utils/response_result.dart';
@@ -383,6 +384,33 @@ class PersonalService {
         message: 'Empleados por estado obtenidos exitosamente',
         data: empleados,
       );
+    } catch (e) {
+      return ResponseResult.error(
+        message: 'Error de conexión: $e',
+        errorCode: 'NETWORK_ERROR',
+      );
+    }
+  }
+
+  Future<ResponseResult<List<Event>>> getUpcomingEventsForEmpleado(
+    String dni,
+  ) async {
+    try {
+      final response = await Urls.getUrl('/staff/empleados/$dni/eventos/proximos', {
+        'Content-Type': 'application/json',
+      });
+
+      if (response['status'] == false) {
+        return ResponseResult.error(
+          message: response['message'] ?? 'Error',
+          errorCode: 'FETCH_EVENTS',
+        );
+      }
+
+      final List<Event> events =
+          (response['data'] as List).map((e) => Event.fromJson(e)).toList();
+
+      return ResponseResult.success(message: 'Eventos obtenidos', data: events);
     } catch (e) {
       return ResponseResult.error(
         message: 'Error de conexión: $e',

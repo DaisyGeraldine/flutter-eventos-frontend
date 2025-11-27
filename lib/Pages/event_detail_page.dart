@@ -4,8 +4,8 @@ import 'package:flutter_application_2/models/event.dart';
 import 'package:intl/intl.dart';
 
 class EventDetailPage extends StatefulWidget {
-  final Event? requestEvent;
-  const EventDetailPage({super.key, this.requestEvent});
+  final Event? event;
+  const EventDetailPage({super.key, this.event});
 
   @override
   State<EventDetailPage> createState() => _EventDetailPageState();
@@ -14,7 +14,7 @@ class EventDetailPage extends StatefulWidget {
 class _EventDetailPageState extends State<EventDetailPage> {
   @override
   Widget build(BuildContext context) {
-    final evento = widget.requestEvent!;
+    final Event event = widget.event!;
 
     return Scaffold(
       body: CustomScrollView(
@@ -28,7 +28,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                evento.nombre,
+                event.nombre,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -54,11 +54,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                   ),
                 ),
                 child: const Center(
-                  child: Icon(
-                    Icons.event,
-                    size: 80,
-                    color: Colors.white30,
-                  ),
+                  child: Icon(Icons.event, size: 80, color: Colors.white30),
                 ),
               ),
             ),
@@ -70,33 +66,35 @@ class _EventDetailPageState extends State<EventDetailPage> {
               child: Column(
                 children: [
                   // Estado del evento
-                  _buildEstadoCard(evento.estado ?? ''),
+                  _buildEstadoCard(event.estado ?? ''),
                   const SizedBox(height: 16),
-                  
+
                   // Información principal
-                  _buildInfoCard(evento),
+                  _buildInfoCard(event),
                   const SizedBox(height: 16),
-                  
+
                   // Detalles del evento
-                  _buildDetallesCard(evento),
+                  _buildDetallesCard(event),
                   const SizedBox(height: 16),
-                  
+
                   // Requerimientos
-                  _buildRequerimientosCard(evento),
+                  _buildRequerimientosCard(event),
                   const SizedBox(height: 16),
-                  
+
                   // Anotaciones si existen
-                  if (evento.anotaciones != null && evento.anotaciones!.isNotEmpty)
-                    _buildAnotacionesCard(evento.anotaciones!),
-                  
-                  const SizedBox(height: 100), // Espacio para el botón flotante
+                  if (event.anotaciones != null &&
+                      event.anotaciones!.isNotEmpty)
+                    _buildAnotacionesCard(event.anotaciones!),
+
+                  if ( event.estado == 'Pendiente')
+                    const SizedBox(height: 100), // Espacio para el botón flotante
                 ],
               ),
             ),
           ),
         ],
       ),
-      floatingActionButton: _buildFloatingActionButton(evento),
+      floatingActionButton: _buildFloatingActionButton(event),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
@@ -123,7 +121,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
         icon = Icons.play_arrow;
         break;
       case 'finalizado':
-        backgroundColor = Colors.purpleAccent;
+        backgroundColor = Colors.blueAccent;
         textColor = Colors.white;
         icon = Icons.check_circle;
         break;
@@ -182,10 +180,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 const SizedBox(width: 8),
                 const Text(
                   'Información General',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -245,10 +240,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 const SizedBox(width: 8),
                 const Text(
                   'Detalles del Evento',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -287,10 +279,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 const SizedBox(width: 8),
                 const Text(
                   'Requerimientos',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -329,10 +318,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 const SizedBox(width: 8),
                 const Text(
                   'Anotaciones Adicionales',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -347,10 +333,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
               ),
               child: Text(
                 anotaciones,
-                style: const TextStyle(
-                  fontSize: 14,
-                  height: 1.4,
-                ),
+                style: const TextStyle(fontSize: 14, height: 1.4),
               ),
             ),
           ],
@@ -398,7 +381,12 @@ class _EventDetailPageState extends State<EventDetailPage> {
     );
   }
 
-  Widget _buildDetailSection(String label, String value, IconData icon, Color color) {
+  Widget _buildDetailSection(
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -437,7 +425,12 @@ class _EventDetailPageState extends State<EventDetailPage> {
     );
   }
 
-  Widget _buildRequerimientoSection(String title, String content, IconData icon, Color color) {
+  Widget _buildRequerimientoSection(
+    String title,
+    String content,
+    IconData icon,
+    Color color,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -447,10 +440,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
             const SizedBox(width: 8),
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -463,10 +453,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: color.withOpacity(0.2)),
           ),
-          child: Text(
-            content,
-            style: const TextStyle(fontSize: 14),
-          ),
+          child: Text(content, style: const TextStyle(fontSize: 14)),
         ),
       ],
     );
@@ -485,7 +472,7 @@ class _EventDetailPageState extends State<EventDetailPage> {
                 builder: (context) => VerifyAvailabilityPage(event: evento),
               ),
             );
-            
+
             if (result == true && mounted) {
               // Actualizar la página padre si es necesario
               Navigator.pop(context, true);
@@ -503,49 +490,43 @@ class _EventDetailPageState extends State<EventDetailPage> {
           icon: const Icon(Icons.verified_outlined),
           label: const Text(
             'Verificar Disponibilidad',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ),
       );
-    } else if (evento.estado == 'En preparación') {
-      return Container(
-        width: double.infinity,
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        child: ElevatedButton.icon(
-          onPressed: () {
-            // TODO: Implementar lógica para iniciar ejecución
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Función de inicio de ejecución próximamente'),
-                backgroundColor: Colors.blue,
-              ),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            elevation: 8,
-          ),
-          icon: const Icon(Icons.play_arrow),
-          label: const Text(
-            'Iniciar Ejecución',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      );
-    }
-    
+    } 
+    // else if (evento.estado == 'En preparación') {
+    //   return Container(
+    //     width: double.infinity,
+    //     margin: const EdgeInsets.symmetric(horizontal: 20),
+    //     child: ElevatedButton.icon(
+    //       onPressed: () {
+    //         // TODO: Implementar lógica para iniciar ejecución
+    //         ScaffoldMessenger.of(context).showSnackBar(
+    //           const SnackBar(
+    //             content: Text('Función de inicio de ejecución próximamente'),
+    //             backgroundColor: Colors.blue,
+    //           ),
+    //         );
+    //       },
+    //       style: ElevatedButton.styleFrom(
+    //         backgroundColor: Colors.green,
+    //         foregroundColor: Colors.white,
+    //         padding: const EdgeInsets.symmetric(vertical: 16),
+    //         shape: RoundedRectangleBorder(
+    //           borderRadius: BorderRadius.circular(12),
+    //         ),
+    //         elevation: 8,
+    //       ),
+    //       icon: const Icon(Icons.play_arrow),
+    //       label: const Text(
+    //         'Iniciar Ejecución',
+    //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    //       ),
+    //     ),
+    //   );
+    // }
+
     return null; // No mostrar botón para otros estados
   }
-  
 }

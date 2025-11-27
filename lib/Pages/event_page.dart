@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/Pages/event_detail_page.dart';
-import 'package:flutter_application_2/Pages/verify_personal_page.dart';
 import 'package:flutter_application_2/models/employee.dart';
 import 'package:flutter_application_2/models/event.dart';
 import 'package:flutter_application_2/service/event_service.dart';
@@ -77,29 +75,33 @@ class _EventsPageState extends State<EventsPage> {
                             _buildFilterButton("Pendiente"),
                             _buildFilterButton("En preparación"),
                             _buildFilterButton("En ejecución"),
+                            _buildFilterButton("Finalizado"),
                           ],
                         ),
                       ),
                     ),
                     // Contador de eventos
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          _getEventCountText(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
-                          ),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        _getEventCountText(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      // Lista de eventos
-                      Expanded(child: _buildListaEventos()),
+                    ),
+                    const SizedBox(height: 8),
+                    // Lista de eventos
+                    Expanded(child: _buildListaEventos()),
                   ],
                 ),
               ),
@@ -121,9 +123,10 @@ class _EventsPageState extends State<EventsPage> {
   }
 
   Widget _buildFilterButton(String estado) {
-    final count = estado == 'Todos' 
-        ? eventRequest.length 
-        : eventRequest.where((e) => e.estado == estado).length;
+    final count =
+        estado == 'Todos'
+            ? eventRequest.length
+            : eventRequest.where((e) => e.estado == estado).length;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -134,15 +137,13 @@ class _EventsPageState extends State<EventsPage> {
           });
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: filtroEstado == estado 
-              ? const Color(0xff142047) 
-              : Colors.grey[200],
-          foregroundColor: filtroEstado == estado 
-              ? Colors.white 
-              : Colors.black87,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
-          ),
+          backgroundColor:
+              filtroEstado == estado
+                  ? const Color(0xff142047)
+                  : Colors.grey[200],
+          foregroundColor:
+              filtroEstado == estado ? Colors.white : Colors.black87,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         ),
         child: Row(
@@ -154,17 +155,19 @@ class _EventsPageState extends State<EventsPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: filtroEstado == estado 
-                      ? Colors.white 
-                      : const Color(0xff142047),
+                  color:
+                      filtroEstado == estado
+                          ? Colors.white
+                          : const Color(0xff142047),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   count.toString(),
                   style: TextStyle(
-                    color: filtroEstado == estado 
-                        ? const Color(0xff142047) 
-                        : Colors.white,
+                    color:
+                        filtroEstado == estado
+                            ? const Color(0xff142047)
+                            : Colors.white,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
@@ -185,11 +188,7 @@ class _EventsPageState extends State<EventsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.event_busy,
-              size: 64,
-              color: Colors.grey[400],
-            ),
+            Icon(Icons.event_busy, size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
             Text(
               filtroEstado == 'Todos'
@@ -204,10 +203,7 @@ class _EventsPageState extends State<EventsPage> {
             const SizedBox(height: 8),
             Text(
               'Los eventos aparecerán aquí cuando estén disponibles',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[500],
-              ),
+              style: TextStyle(fontSize: 14, color: Colors.grey[500]),
               textAlign: TextAlign.center,
             ),
           ],
@@ -243,20 +239,28 @@ class _EventsPageState extends State<EventsPage> {
                           ),
                         ),
                       ),
-                      _buildEstadoBadge(evento.estado??''),
+                      _buildEstadoBadge(evento.estado ?? ''),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(Icons.calendar_today, size: 16, color: Colors.grey),
+                      const Icon(
+                        Icons.calendar_today,
+                        size: 16,
+                        color: Colors.grey,
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         DateFormat('dd/MM/yyyy').format(evento.fechaIni),
                         style: const TextStyle(color: Colors.grey),
                       ),
                       const SizedBox(width: 16),
-                      const Icon(Icons.access_time, size: 16, color: Colors.grey),
+                      const Icon(
+                        Icons.access_time,
+                        size: 16,
+                        color: Colors.grey,
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         "${evento.duracion}h",
@@ -267,7 +271,11 @@ class _EventsPageState extends State<EventsPage> {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.location_on, size: 16, color: Colors.grey),
+                      const Icon(
+                        Icons.location_on,
+                        size: 16,
+                        color: Colors.grey,
+                      ),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
@@ -312,7 +320,7 @@ class _EventsPageState extends State<EventsPage> {
         textColor = Colors.white;
         break;
       case 'finalizado':
-        backgroundColor = Colors.purpleAccent;
+        backgroundColor = Colors.blueAccent;
         textColor = Colors.white;
         break;
       case 'cancelado':
@@ -332,7 +340,7 @@ class _EventsPageState extends State<EventsPage> {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
-        textAlign:  TextAlign.center,
+        textAlign: TextAlign.center,
         estado,
         style: TextStyle(
           color: textColor,
@@ -354,9 +362,7 @@ class _EventsPageState extends State<EventsPage> {
         style: OutlinedButton.styleFrom(
           foregroundColor: const Color(0xff142047),
           side: const BorderSide(color: Color(0xff142047)),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         ),
       ),
     );
@@ -382,27 +388,18 @@ class _EventsPageState extends State<EventsPage> {
   }
 
   _verDetalles(Event evento) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EventDetailPage(requestEvent: evento),
-      ),
-    );
+    Navigator.pushNamed(context, '/event_detail', arguments: evento);
   }
 
-  _verificarDisponibilidad(Event evento) {
-    // Lógica para verificar disponibilidad
+  _verificarDisponibilidad(Event evento) async {
     print("Verificando disponibilidad para el evento ${evento.cod}");
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => VerifyAvailabilityPage(event: evento),
-      ),
-    );
+    await Navigator.pushNamed(context, '/verify_personal', arguments: evento);
+    setState(() {
+      loadRequestEvents();
+    });
   }
 
   _iniciarEjecucion(Event evento) {
-    // Lógica para iniciar ejecución
     print("Iniciando ejecución para el evento ${evento.cod}");
   }
 }

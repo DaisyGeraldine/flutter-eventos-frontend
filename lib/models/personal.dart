@@ -4,6 +4,7 @@ class Personal {
   final String apellidos;
   final String category;
   final double? precio;
+  final String? estado;
 
   Personal({
     required this.dni,
@@ -11,6 +12,7 @@ class Personal {
     required this.apellidos,
     required this.category,
     required this.precio,
+    required this.estado,
   });
 
   factory Personal.fromJson(Map<String, dynamic> json) {
@@ -21,6 +23,7 @@ class Personal {
       category: json['category'],
       precio:
           json['precio'] != null ? (json['precio'] as num).toDouble() : null,
+      estado: json['estado'],
     );
   }
 }

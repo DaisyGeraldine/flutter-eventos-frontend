@@ -252,6 +252,19 @@ class _CalendarPageState extends State<CalendarPage> {
                     color: Colors.blue,
                   ),
                 ),
+                SizedBox(width: 8),
+                IconButton(
+                  icon: const Icon(Icons.arrow_forward),
+                  color: Colors.blue,
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/event_detail',
+                      arguments: event,
+                    );
+                  },
+                ),
+                Spacer(),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,
@@ -320,14 +333,14 @@ class _CalendarPageState extends State<CalendarPage> {
     switch (status.toLowerCase()) {
       case 'cancelado':
         return Colors.red;
-      case 'Pendiente':
-        return Colors.blue;
-      case 'En preparación':
-        return Colors.orange;
-      case 'En ejecución':
-        return Colors.green;
-      case 'Finalizado':
-        return Colors.grey[800]!;
+      case 'pendiente':
+        return Colors.redAccent;
+      case 'en preparación':
+        return Colors.orangeAccent;
+      case 'en ejecución':
+        return Colors.greenAccent;
+      case 'finalizado':
+        return Colors.blueAccent;
       default:
         return Colors.grey;
     }
