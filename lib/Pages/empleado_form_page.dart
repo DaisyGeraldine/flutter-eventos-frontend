@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/employee.dart';
 import 'package:flutter_application_2/service/personal_service.dart';
+import 'package:bcrypt/bcrypt.dart';
 
 class EmpleadoFormPage extends StatefulWidget {
   final EmployeeComplete? empleado;
@@ -42,14 +43,35 @@ class _EmpleadoFormPageState extends State<EmpleadoFormPage> {
 
   void _initializeControllers() {
     _dniController = TextEditingController(text: widget.empleado?.dni ?? '');
-    _nombreController = TextEditingController(text: widget.empleado?.nombre ?? '');
-    _apellidosController = TextEditingController(text: widget.empleado?.apellidos ?? '');
-    _direccionController = TextEditingController(text: widget.empleado?.direccion ?? '');
-    _numSSController = TextEditingController(text: widget.empleado?.numSS ?? '');
-    _contratosHorasController = TextEditingController(text: widget.empleado?.contratosHoras?.toString() ?? '');
-    _emailController = TextEditingController(text: widget.empleado?.email ?? '');
-    _contrasenaController = TextEditingController(text: widget.empleado?.contrasena ?? '');
-    _telefonoController = TextEditingController(text: widget.empleado?.telefono ?? '');
+    _nombreController = TextEditingController(
+      text: widget.empleado?.nombre ?? '',
+    );
+    _apellidosController = TextEditingController(
+      text: widget.empleado?.apellidos ?? '',
+    );
+    _direccionController = TextEditingController(
+      text: widget.empleado?.direccion ?? '',
+    );
+    _numSSController = TextEditingController(
+      text: widget.empleado?.numSS ?? '',
+    );
+    _contratosHorasController = TextEditingController(
+      text: widget.empleado?.contratosHoras?.toString() ?? '',
+    );
+    _emailController = TextEditingController(
+      text: widget.empleado?.email ?? '',
+    );
+    // Si el valor recibido parece un hash bcrypt, NO lo mostramos en el campo.
+    final existingPwd = widget.empleado?.contrasena;
+    _contrasenaController = TextEditingController(
+      text:
+          (existingPwd != null && !_isBcryptHash(existingPwd))
+              ? existingPwd
+              : '',
+    );
+    _telefonoController = TextEditingController(
+      text: widget.empleado?.telefono ?? '',
+    );
 
     _selectedCategoria = widget.empleado?.categoriaPersona;
     _selectedEstado = widget.empleado?.estado ?? EstadoEmpleado.disponible;
@@ -92,6 +114,10 @@ class _EmpleadoFormPageState extends State<EmpleadoFormPage> {
     return '${date.day}/${date.month}/${date.year}';
   }
 
+  bool _isBcryptHash(String s) {
+    return RegExp(r'^\$2[aby]\$').hasMatch(s);
+  }
+
   Future<void> _saveEmpleado() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -109,26 +135,64 @@ class _EmpleadoFormPageState extends State<EmpleadoFormPage> {
       _isLoading = true;
     });
 
+    // Manejo de contraseña:
+    // - Si el usuario no escribe nada => no cambiamos la contraseña (enviamos null)
+    // - Si escribe y parece un hash bcrypt => lo usamos tal cual
+    // - Si escribe texto plano => lo hasheamos antes de enviar
+
+    String? hashedPassword;
+    final rawPwd = _contrasenaController.text.trim();
+    if (rawPwd.isNotEmpty) {
+      if (_isBcryptHash(rawPwd)) {
+        hashedPassword = rawPwd; // ya es hash
+      } else {
+        hashedPassword = BCrypt.hashpw(rawPwd, BCrypt.gensalt());
+      }
+    } else {
+      hashedPassword =
+          null; // indica "sin cambio" al backend (asegúrate que el servicio ignore null)
+    }
+
     final empleado = EmployeeComplete(
       dni: _dniController.text.trim(),
-      nombre: _nombreController.text.trim().isEmpty ? null : _nombreController.text.trim(),
-      apellidos: _apellidosController.text.trim().isEmpty ? null : _apellidosController.text.trim(),
-      direccion: _direccionController.text.trim().isEmpty ? null : _direccionController.text.trim(),
-      numSS: _numSSController.text.trim().isEmpty ? null : _numSSController.text.trim(),
+      nombre:
+          _nombreController.text.trim().isEmpty
+              ? null
+              : _nombreController.text.trim(),
+      apellidos:
+          _apellidosController.text.trim().isEmpty
+              ? null
+              : _apellidosController.text.trim(),
+      direccion:
+          _direccionController.text.trim().isEmpty
+              ? null
+              : _direccionController.text.trim(),
+      numSS:
+          _numSSController.text.trim().isEmpty
+              ? null
+              : _numSSController.text.trim(),
       categoriaPersona: _selectedCategoria,
-      contratosHoras: _contratosHorasController.text.trim().isEmpty 
-          ? null 
-          : int.tryParse(_contratosHorasController.text.trim()),
+      contratosHoras:
+          _contratosHorasController.text.trim().isEmpty
+              ? null
+              : int.tryParse(_contratosHorasController.text.trim()),
       fechaAlta: _fechaAlta,
       estado: _selectedEstado,
-      email: _emailController.text.trim().isEmpty ? null : _emailController.text.trim(),
-      contrasena: _contrasenaController.text.trim().isEmpty ? null : _contrasenaController.text.trim(),
-      telefono: _telefonoController.text.trim().isEmpty ? null : _telefonoController.text.trim(),
+      email:
+          _emailController.text.trim().isEmpty
+              ? null
+              : _emailController.text.trim(),
+      contrasena: hashedPassword,
+      telefono:
+          _telefonoController.text.trim().isEmpty
+              ? null
+              : _telefonoController.text.trim(),
     );
 
-    final result = isEditing
-        ? await _personalService.updateEmpleado(empleado)
-        : await _personalService.createEmpleado(empleado);
+    final result =
+        isEditing
+            ? await _personalService.updateEmpleado(empleado)
+            : await _personalService.createEmpleado(empleado);
 
     setState(() {
       _isLoading = false;
@@ -136,18 +200,12 @@ class _EmpleadoFormPageState extends State<EmpleadoFormPage> {
 
     if (result.success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result.message),
-          backgroundColor: Colors.green,
-        ),
+        SnackBar(content: Text(result.message), backgroundColor: Colors.green),
       );
       Navigator.of(context).pop(true);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result.message),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text(result.message), backgroundColor: Colors.red),
       );
     }
   }
@@ -160,18 +218,16 @@ class _EmpleadoFormPageState extends State<EmpleadoFormPage> {
         backgroundColor: const Color(0xff142047),
         foregroundColor: Colors.white,
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Form(
-              key: _formKey,
-              child: ListView(
-                padding: const EdgeInsets.all(16),
-                children: [
-                  // Información Personal
-                  _buildSectionCard(
-                    'Información Personal',
-                    Icons.person,
-                    [
+      body:
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Form(
+                key: _formKey,
+                child: ListView(
+                  padding: const EdgeInsets.all(16),
+                  children: [
+                    // Información Personal
+                    _buildSectionCard('Información Personal', Icons.person, [
                       _buildDNIField(),
                       const SizedBox(height: 16),
                       Row(
@@ -185,16 +241,12 @@ class _EmpleadoFormPageState extends State<EmpleadoFormPage> {
                       _buildDireccionField(),
                       const SizedBox(height: 16),
                       _buildTelefonoField(),
-                    ],
-                  ),
+                    ]),
 
-                  const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                  // Información Laboral
-                  _buildSectionCard(
-                    'Información Laboral',
-                    Icons.work,
-                    [
+                    // Información Laboral
+                    _buildSectionCard('Información Laboral', Icons.work, [
                       _buildNumSSField(),
                       const SizedBox(height: 16),
                       Row(
@@ -212,54 +264,49 @@ class _EmpleadoFormPageState extends State<EmpleadoFormPage> {
                           Expanded(child: _buildFechaAltaField()),
                         ],
                       ),
-                    ],
-                  ),
+                    ]),
 
-                  const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                  // Información de Acceso
-                  _buildSectionCard(
-                    'Información de Acceso',
-                    Icons.security,
-                    [
+                    // Información de Acceso
+                    _buildSectionCard('Información de Acceso', Icons.security, [
                       _buildEmailField(),
                       const SizedBox(height: 16),
                       _buildContrasenaField(),
-                    ],
-                  ),
+                    ]),
 
-                  const SizedBox(height: 32),
+                    const SizedBox(height: 32),
 
-                  // Botones de acción
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            side: const BorderSide(color: Colors.grey),
+                    // Botones de acción
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              side: const BorderSide(color: Colors.grey),
+                            ),
+                            child: const Text('Cancelar'),
                           ),
-                          child: const Text('Cancelar'),
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: _saveEmpleado,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xff142047),
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _saveEmpleado,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xff142047),
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                            ),
+                            child: Text(isEditing ? 'Actualizar' : 'Crear'),
                           ),
-                          child: Text(isEditing ? 'Actualizar' : 'Crear'),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
     );
   }
 
@@ -411,12 +458,13 @@ class _EmpleadoFormPageState extends State<EmpleadoFormPage> {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         prefixIcon: const Icon(Icons.category),
       ),
-      items: CategoriaPersona.values.map((categoria) {
-        return DropdownMenuItem(
-          value: categoria,
-          child: Text(_getCategoriaTexto(categoria)),
-        );
-      }).toList(),
+      items:
+          CategoriaPersona.values.map((categoria) {
+            return DropdownMenuItem(
+              value: categoria,
+              child: Text(_getCategoriaTexto(categoria)),
+            );
+          }).toList(),
       onChanged: (value) {
         setState(() {
           _selectedCategoria = value;
@@ -439,12 +487,13 @@ class _EmpleadoFormPageState extends State<EmpleadoFormPage> {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         prefixIcon: const Icon(Icons.circle),
       ),
-      items: EstadoEmpleado.values.map((estado) {
-        return DropdownMenuItem(
-          value: estado,
-          child: Text(_getEstadoTexto(estado)),
-        );
-      }).toList(),
+      items:
+          EstadoEmpleado.values.map((estado) {
+            return DropdownMenuItem(
+              value: estado,
+              child: Text(_getEstadoTexto(estado)),
+            );
+          }).toList(),
       onChanged: (value) {
         setState(() {
           _selectedEstado = value;
@@ -527,7 +576,9 @@ class _EmpleadoFormPageState extends State<EmpleadoFormPage> {
           if (value.trim().length > 50) {
             return 'El email no puede tener más de 50 caracteres';
           }
-          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value.trim())) {
+          if (!RegExp(
+            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+          ).hasMatch(value.trim())) {
             return 'Ingresa un email válido';
           }
         }
