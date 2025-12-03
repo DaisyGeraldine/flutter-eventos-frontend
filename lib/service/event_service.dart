@@ -106,4 +106,33 @@ class EventService {
 
     return ResponseResult.success(message: 'Evento preparado correctamente');
   }
+
+  Future<ResponseResult<void>> updatePresupuestoFinal(
+    String codEvento,
+    double presupuestoFinal,
+  ) async {
+    try {
+      final response = await Urls.putUrl(
+        '/events/$codEvento/presupuesto-final',
+        {'presupuestoModificado': presupuestoFinal},
+        {'Content-Type': 'application/json'},
+      );
+
+      if (response['status'] == false) {
+        return ResponseResult.error(
+          message: response['message'] ?? 'Error actualizando presupuesto',
+          errorCode: 'UPDATE_PRESUPUESTO_FAILED',
+        );
+      }
+
+      return ResponseResult.success(
+        message: 'Presupuesto actualizado exitosamente',
+      );
+    } catch (e) {
+      return ResponseResult.error(
+        message: 'Error de conexión: $e',
+        errorCode: 'NETWORK_ERROR',
+      );
+    }
+  }
 }
