@@ -423,7 +423,7 @@ class _EventsPageState extends State<EventsPage> {
       iconoEstado = Icons.trending_down;
     } else if (porcentajeDiferencia <= 10) {
       // Exceso leve (hasta 10%) - Amarillo
-      indicadorColor = Colors.amber[800]!;
+      indicadorColor = Colors.amber[600]!;
       iconoEstado = Icons.trending_flat;
     } else {
       // Exceso grande (más de 10%) - Rojo
