@@ -74,19 +74,23 @@ class Event {
   factory Event.fromJson(Map<String, dynamic> json) {
     // Parsea la hora de un string "HH:mm"
     final timeParts;
-    if (json['horaPrevistaInicio'] != null && json['horaPrevistaInicio'] is String) {
+    if (json['horaPrevistaInicio'] != null &&
+        json['horaPrevistaInicio'] is String) {
       timeParts = (json['horaPrevistaInicio'] as String).split(':');
     } else {
       timeParts = ['0', '0'];
     }
+
+    final iniUtc = DateTime.parse(json['fechaIni']).toLocal();
+    final finUtc = DateTime.parse(json['fechaFin']).toLocal();
 
     return Event(
       cod: json['cod'],
       nombre: json['nombre'],
       descripcionMaterial: json['descripcionMaterial'] ?? '',
       descripcionPersonal: json['descripcionPersonal'] ?? '',
-      fechaIni: DateTime.parse(json['fechaIni']),
-      fechaFin: DateTime.parse(json['fechaFin']),
+      fechaIni: DateTime(iniUtc.year, iniUtc.month, iniUtc.day),
+      fechaFin: DateTime(finUtc.year, finUtc.month, finUtc.day),
       // horaPrevistaIni: TimeOfDay(
       //   hour: int.parse(timeParts[0]),
       //   minute: int.parse(timeParts[1]),
